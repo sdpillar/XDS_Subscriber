@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="Server" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.43.36</Value>
+      <Value Profile="(Default)">SP-DL-IN\SQLEXPRESS</Value>
     </Setting>
     <Setting Name="Database" Type="System.String" Scope="User">
       <Value Profile="(Default)">XdsRegistry.XdsDataBase</Value>
     </Setting>
     <Setting Name="User" Type="System.String" Scope="User">
-      <Value Profile="(Default)">hssXds</Value>
+      <Value Profile="(Default)">sdpillar</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">!Linden.0605</Value>
@@ -28,6 +28,17 @@
     </Setting>
     <Setting Name="HashCode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">99999</Value>
+    </Setting>
+    <Setting Name="TermLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">42</Value>
+    </Setting>
+    <Setting Name="XdsRegistry_XdsDataBaseConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=SP-DL-IN\SQLEXPRESS;Initial Catalog=XdsRegistry.XdsDataBase;User ID=sdpillar&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=SP-DL-IN\SQLEXPRESS;Initial Catalog=XdsRegistry.XdsDataBase;User ID=sdpillar</Value>
     </Setting>
   </Settings>
 </SettingsFile>

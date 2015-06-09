@@ -25,7 +25,7 @@ namespace XDS_Subscriber.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.43.36")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SP-DL-IN\\SQLEXPRESS")]
         public string Server {
             get {
                 return ((string)(this["Server"]));
@@ -49,7 +49,7 @@ namespace XDS_Subscriber.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("hssXds")]
+        [global::System.Configuration.DefaultSettingValueAttribute("sdpillar")]
         public string User {
             get {
                 return ((string)(this["User"]));
@@ -128,6 +128,29 @@ namespace XDS_Subscriber.Properties {
             }
             set {
                 this["HashCode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("42")]
+        public int TermLength {
+            get {
+                return ((int)(this["TermLength"]));
+            }
+            set {
+                this["TermLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SP-DL-IN\\SQLEXPRESS;Initial Catalog=XdsRegistry.XdsDataBase;User ID=s" +
+            "dpillar")]
+        public string XdsRegistry_XdsDataBaseConnectionString {
+            get {
+                return ((string)(this["XdsRegistry_XdsDataBaseConnectionString"]));
             }
         }
     }

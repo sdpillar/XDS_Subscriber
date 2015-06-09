@@ -87,6 +87,11 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="_XdsRegistry_XdsDataBaseDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_XdsRegistry_XdsDataBaseDataSet.xsd</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmSubscriptions.resx">
       <DependentUpon>frmSubscriptions.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,6 +117,17 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="XDS_Subscriber_TemporaryKey.pfx" />
+    <None Include="_XdsRegistry_XdsDataBaseDataSet.xsc">
+      <DependentUpon>_XdsRegistry_XdsDataBaseDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="_XdsRegistry_XdsDataBaseDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>_XdsRegistry_XdsDataBaseDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="_XdsRegistry_XdsDataBaseDataSet.xss">
+      <DependentUpon>_XdsRegistry_XdsDataBaseDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

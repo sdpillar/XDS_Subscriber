@@ -40,22 +40,26 @@
             this.cmdPatients = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.nudMonths = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.txtTermDateTime = new System.Windows.Forms.TextBox();
-            this.nudMonths = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblTerm = new System.Windows.Forms.Label();
             this.cmdSubscribe = new System.Windows.Forms.Button();
             this.ttpSubscription = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
+            this.grpSubscriptions = new System.Windows.Forms.GroupBox();
             this.grpPatients.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
+            this.grpSubscriptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdClose
             // 
             this.cmdClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdClose.Location = new System.Drawing.Point(468, 163);
+            this.cmdClose.Location = new System.Drawing.Point(468, 381);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(136, 23);
             this.cmdClose.TabIndex = 0;
@@ -110,10 +114,10 @@
             this.groupBox1.Controls.Add(this.cmdPatients);
             this.groupBox1.Controls.Add(this.cmbType);
             this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.nudMonths);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtTermDateTime);
-            this.groupBox1.Controls.Add(this.nudMonths);
-            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.lblTerm);
             this.groupBox1.Controls.Add(this.cmdSubscribe);
             this.groupBox1.Location = new System.Drawing.Point(255, 12);
             this.groupBox1.Name = "groupBox1";
@@ -159,28 +163,9 @@
             this.label4.Text = "Endpoint:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 19);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
-            this.label3.TabIndex = 26;
-            this.label3.Text = "Cancer Type:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // txtTermDateTime
-            // 
-            this.txtTermDateTime.BackColor = System.Drawing.SystemColors.Control;
-            this.txtTermDateTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtTermDateTime.Location = new System.Drawing.Point(8, 125);
-            this.txtTermDateTime.Name = "txtTermDateTime";
-            this.txtTermDateTime.Size = new System.Drawing.Size(296, 13);
-            this.txtTermDateTime.TabIndex = 25;
-            // 
             // nudMonths
             // 
-            this.nudMonths.Location = new System.Drawing.Point(122, 93);
+            this.nudMonths.Location = new System.Drawing.Point(246, 93);
             this.nudMonths.Maximum = new decimal(new int[] {
             12,
             0,
@@ -199,17 +184,37 @@
             0,
             0,
             0});
+            this.nudMonths.Visible = false;
             this.nudMonths.ValueChanged += new System.EventHandler(this.nudMonths_ValueChanged);
             // 
-            // label1
+            // label3
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 93);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 13);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Months to termination:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "Cancer Type:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // txtTermDateTime
+            // 
+            this.txtTermDateTime.BackColor = System.Drawing.SystemColors.Control;
+            this.txtTermDateTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtTermDateTime.Location = new System.Drawing.Point(8, 120);
+            this.txtTermDateTime.Name = "txtTermDateTime";
+            this.txtTermDateTime.Size = new System.Drawing.Size(296, 13);
+            this.txtTermDateTime.TabIndex = 25;
+            // 
+            // lblTerm
+            // 
+            this.lblTerm.AutoSize = true;
+            this.lblTerm.Location = new System.Drawing.Point(5, 93);
+            this.lblTerm.Name = "lblTerm";
+            this.lblTerm.Size = new System.Drawing.Size(111, 13);
+            this.lblTerm.TabIndex = 23;
+            this.lblTerm.Text = "Months to termination:";
+            this.lblTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // cmdSubscribe
             // 
@@ -230,11 +235,33 @@
             this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 24;
             // 
+            // dgvSubscriptions
+            // 
+            this.dgvSubscriptions.AllowUserToAddRows = false;
+            this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSubscriptions.Location = new System.Drawing.Point(8, 19);
+            this.dgvSubscriptions.Name = "dgvSubscriptions";
+            this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 187);
+            this.dgvSubscriptions.TabIndex = 25;
+            this.dgvSubscriptions.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSubscriptions_CellFormatting);
+            // 
+            // grpSubscriptions
+            // 
+            this.grpSubscriptions.Controls.Add(this.dgvSubscriptions);
+            this.grpSubscriptions.Location = new System.Drawing.Point(10, 163);
+            this.grpSubscriptions.Name = "grpSubscriptions";
+            this.grpSubscriptions.Size = new System.Drawing.Size(594, 212);
+            this.grpSubscriptions.TabIndex = 26;
+            this.grpSubscriptions.TabStop = false;
+            this.grpSubscriptions.Text = "Subscriptions";
+            // 
             // frmSubscriptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 194);
+            this.ClientSize = new System.Drawing.Size(608, 409);
+            this.Controls.Add(this.grpSubscriptions);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpPatients);
@@ -249,6 +276,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
+            this.grpSubscriptions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,13 +296,15 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtTermDateTime;
         private System.Windows.Forms.NumericUpDown nudMonths;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblTerm;
         private System.Windows.Forms.Button cmdSubscribe;
         private System.Windows.Forms.ToolTip ttpSubscription;
         private System.Windows.Forms.ListView lstPatients;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TextBox txtEndpoint;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dgvSubscriptions;
+        private System.Windows.Forms.GroupBox grpSubscriptions;
     }
 }
 

@@ -21,6 +21,7 @@ namespace XDS_Subscriber
     public partial class frmSubscriptions : Form
     {
         SqlConnection cnn = null;
+        private BindingSource bindingSourceSubscriptions = new BindingSource();
 
         public frmSubscriptions()
         {
@@ -30,7 +31,8 @@ namespace XDS_Subscriber
         private void frmSubscriptions_Load(object sender, EventArgs e)
         {
             OnStartup();
-            txtTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(12).ToString("dddd, MMMM d, yyyy HH:mm:ss");
+            lblTerm.Text = "Months to termination: " + Properties.Settings.Default.TermLength.ToString();
+            txtTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
         }
 
         private void OnStartup()
@@ -57,11 +59,39 @@ namespace XDS_Subscriber
                 string connectionString = "Server=" + server + ";Database=" + database + ";User Id=" + user + ";Password=" + password;
                 cnn = new SqlConnection(connectionString);
                 cnn.Open();
+
+                dgvSubscriptions.AutoGenerateColumns = true;
+                dgvSubscriptions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvSubscriptions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, ConsumerReferenceAddress as Endpoint, CancerType, TerminationTime From dbo.MySubscriptions", cnn);
+                dgvSubscriptions.DataSource = bindingSourceSubscriptions;
+                int subscriptionCount = bindingSourceSubscriptions.Count;
+                grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
+                int DataGridViewWidth = 0;
+                foreach(DataGridViewColumn column in dgvSubscriptions.Columns)
+                {
+                    DataGridViewWidth = DataGridViewWidth + column.Width;
+                }
+                dgvSubscriptions.Width = DataGridViewWidth + 60;
+                grpSubscriptions.Width = dgvSubscriptions.Width + 20;
+                
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Unable to retrieve existing subscriptions\nCheck database settings", "Error");
             }
+        }
+
+
+        private DataTable GetData(string sqlCommand, SqlConnection conn)
+        {
+            SqlCommand command = new SqlCommand(sqlCommand, conn);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            adapter.SelectCommand = command;
+            
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            return table;
         }
 
         private void cmdPatients_Click(object sender, EventArgs e)
@@ -256,6 +286,11 @@ namespace XDS_Subscriber
             CloseForm();
         }
 
+        private void BuildSubscriptionsDataView()
+        {
+            
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.Shift | Keys.S))
@@ -271,11 +306,13 @@ namespace XDS_Subscriber
             {
                 this.cmdSubscribe.Enabled = true;
                 cnn.Close();
-                openConnection();
+                lblTerm.Text = "Months to termination: " + Properties.Settings.Default.TermLength.ToString();
+                txtTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
                 label2.Text = "Settings up to date...";
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
         private bool checkSubscriptions(string patientId)
         {
             try
@@ -360,6 +397,19 @@ namespace XDS_Subscriber
             catch(Exception ex)
             {
                 MessageBox.Show("Ip Address and/or Port is invalid");
+            }
+        }
+
+        private void dgvSubscriptions_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if(e.ColumnIndex == 0)
+            {
+                string fullPatientId = (string)e.Value;
+                int posPatEnd = fullPatientId.IndexOf("^^^&");
+                if (fullPatientId.Substring(0,4) == "CRIS")
+                {
+                    e.Value = fullPatientId.Substring(4, posPatEnd - 4);
+                }
             }
         } 
     }

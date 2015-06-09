@@ -46,8 +46,12 @@
             this.cmdClose = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmdSaveSettings = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.txtLength = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -191,7 +195,7 @@
             // 
             // cmdClose
             // 
-            this.cmdClose.Location = new System.Drawing.Point(201, 271);
+            this.cmdClose.Location = new System.Drawing.Point(198, 337);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(75, 23);
             this.cmdClose.TabIndex = 15;
@@ -217,7 +221,7 @@
             // cmdSaveSettings
             // 
             this.cmdSaveSettings.Enabled = false;
-            this.cmdSaveSettings.Location = new System.Drawing.Point(88, 271);
+            this.cmdSaveSettings.Location = new System.Drawing.Point(85, 337);
             this.cmdSaveSettings.Name = "cmdSaveSettings";
             this.cmdSaveSettings.Size = new System.Drawing.Size(104, 23);
             this.cmdSaveSettings.TabIndex = 17;
@@ -225,11 +229,41 @@
             this.cmdSaveSettings.UseVisualStyleBackColor = true;
             this.cmdSaveSettings.Click += new System.EventHandler(this.cmdSaveSettings_Click);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.txtLength);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Location = new System.Drawing.Point(6, 271);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(267, 60);
+            this.groupBox3.TabIndex = 18;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Terminnation";
+            // 
+            // txtLength
+            // 
+            this.txtLength.Location = new System.Drawing.Point(112, 25);
+            this.txtLength.Name = "txtLength";
+            this.txtLength.Size = new System.Drawing.Size(57, 20);
+            this.txtLength.TabIndex = 15;
+            this.txtLength.TextChanged += new System.EventHandler(this.txtLength_TextChanged);
+            this.txtLength.Leave += new System.EventHandler(this.txtLength_Leave);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(100, 13);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Subscription length:";
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 304);
+            this.ClientSize = new System.Drawing.Size(281, 367);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.cmdSaveSettings);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.cmdClose);
@@ -244,6 +278,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -268,5 +304,8 @@
         private System.Windows.Forms.Button cmdClose;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button cmdSaveSettings;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox txtLength;
+        private System.Windows.Forms.Label label8;
     }
 }

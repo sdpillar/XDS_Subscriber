@@ -33,7 +33,7 @@ namespace XDS_Subscriber
 
         private int CalcuateHash()
         {
-            string[] txtStrings = new string[] {txtDbServer.Text, txtDatabase.Text, txtUser.Text, txtPassword.Text, txtMirth.Text, txtSubscribePort.Text, txtUnsubscribePort.Text};
+            string[] txtStrings = new string[] {txtDbServer.Text, txtDatabase.Text, txtUser.Text, txtPassword.Text, txtMirth.Text, txtSubscribePort.Text, txtUnsubscribePort.Text, txtLength.Text};
             string hashString = String.Concat(txtStrings);
             int hash = hashString.GetHashCode();
             return hash;
@@ -48,6 +48,7 @@ namespace XDS_Subscriber
             txtMirth.Text = Properties.Settings.Default.MirthInstance;
             txtSubscribePort.Text = Properties.Settings.Default.SubscribePort.ToString();
             txtUnsubscribePort.Text = Properties.Settings.Default.UnsubscribePort.ToString();
+            txtLength.Text = Properties.Settings.Default.TermLength.ToString();
             currentHashValue = CalcuateHash();
             
             this.Location = this.Owner.Location;
@@ -101,6 +102,7 @@ namespace XDS_Subscriber
             Properties.Settings.Default.MirthInstance = txtMirth.Text;
             Properties.Settings.Default.SubscribePort = int.Parse(txtSubscribePort.Text);
             Properties.Settings.Default.UnsubscribePort = int.Parse(txtUnsubscribePort.Text);
+            Properties.Settings.Default.TermLength = int.Parse(txtLength.Text);
             Properties.Settings.Default.HashCode = CalcuateHash();
             Properties.Settings.Default.Save();
             cmdSaveSettings.Enabled = false;
@@ -147,6 +149,24 @@ namespace XDS_Subscriber
         }
 
         private void txtMirth_Leave(object sender, EventArgs e)
+        {
+            HashChanged();
+        }
+
+        private void txtLength_TextChanged(object sender, EventArgs e)
+        {
+            string lengthString = txtLength.Text;
+
+            for (int i = 0; i < lengthString.Length; i++)
+            {
+                if (!char.IsNumber(lengthString[i]))
+                {
+                    MessageBox.Show("Please insert a valid number");
+                }
+            }
+        }
+
+        private void txtLength_Leave(object sender, EventArgs e)
         {
             HashChanged();
         }
