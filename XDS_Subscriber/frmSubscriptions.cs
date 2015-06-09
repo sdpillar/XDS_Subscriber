@@ -79,14 +79,25 @@ namespace XDS_Subscriber
                 {
                     lstPatients.Items.Clear();
                     string filename = dlgLoadPatients.FileName;
-                    //UpdatePatientsFileSetting(filename);
-                    
-                    using(StreamReader sr = new StreamReader(filename))
+                    string extension = Path.GetExtension(filename);
+                    using (StreamReader sr = new StreamReader(filename))
                     {
-                        string lines = "";
-                        while((lines = sr.ReadLine()) != null)
+                        if(extension == ".csv")
                         {
-                            lstPatients.Items.Add(lines);
+                            String alllines = sr.ReadToEnd();
+                            string[] lines = alllines.Split(',');
+                            foreach(string line in lines)
+                            {
+                                lstPatients.Items.Add(line);
+                            }
+                        }
+                        else if (extension == ".txt")
+                        {
+                            string lines = "";
+                            while ((lines = sr.ReadLine()) != null)
+                            {
+                                lstPatients.Items.Add(lines);
+                            }
                         }
                     }
                 }

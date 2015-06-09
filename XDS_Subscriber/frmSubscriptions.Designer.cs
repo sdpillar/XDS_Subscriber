@@ -102,7 +102,7 @@
             // 
             // dlgLoadPatients
             // 
-            this.dlgLoadPatients.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            this.dlgLoadPatients.Filter = "csv files (*.csv)|*.csv|Text files (*.txt)|*.txt";
             // 
             // groupBox1
             // 
@@ -239,9 +239,9 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpPatients);
             this.Controls.Add(this.cmdClose);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "frmSubscriptions";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Subscriptions";
             this.Load += new System.EventHandler(this.frmSubscriptions_Load);
             this.grpPatients.ResumeLayout(false);
