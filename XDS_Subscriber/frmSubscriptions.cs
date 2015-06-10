@@ -46,6 +46,8 @@ namespace XDS_Subscriber
             }
             cmbType.Text = cancerTypes[0];
             txtEndpoint.Text = "localhost:8092";
+            SetupSubscriptionsControl();
+            LoadSubscriptions();
         }
 
         private void openConnection()
@@ -59,22 +61,6 @@ namespace XDS_Subscriber
                 string connectionString = "Server=" + server + ";Database=" + database + ";User Id=" + user + ";Password=" + password;
                 cnn = new SqlConnection(connectionString);
                 cnn.Open();
-
-                dgvSubscriptions.AutoGenerateColumns = true;
-                dgvSubscriptions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvSubscriptions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, ConsumerReferenceAddress as Endpoint, CancerType, TerminationTime From dbo.MySubscriptions", cnn);
-                dgvSubscriptions.DataSource = bindingSourceSubscriptions;
-                int subscriptionCount = bindingSourceSubscriptions.Count;
-                grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
-                int DataGridViewWidth = 0;
-                foreach(DataGridViewColumn column in dgvSubscriptions.Columns)
-                {
-                    DataGridViewWidth = DataGridViewWidth + column.Width;
-                }
-                dgvSubscriptions.Width = DataGridViewWidth + 60;
-                grpSubscriptions.Width = dgvSubscriptions.Width + 20;
-                
             }
             catch(Exception ex)
             {
@@ -82,6 +68,32 @@ namespace XDS_Subscriber
             }
         }
 
+        private void SetupSubscriptionsControl()
+        {
+            dgvSubscriptions.AutoGenerateColumns = true;
+            dgvSubscriptions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvSubscriptions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            
+        }
+
+        private void LoadSubscriptions()
+        {
+            //ToolTip btnToolTip = new ToolTip();
+            
+
+            bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, TerminationTime as Expires, CancerType, ConsumerReferenceAddress as Endpoint From dbo.MySubscriptions", cnn);
+            dgvSubscriptions.DataSource = bindingSourceSubscriptions;
+            int subscriptionCount = bindingSourceSubscriptions.Count;
+            grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
+
+            int DataGridViewWidth = 0;
+            foreach (DataGridViewColumn column in dgvSubscriptions.Columns)
+            {
+                DataGridViewWidth = DataGridViewWidth + column.Width;
+            }
+            dgvSubscriptions.Width = DataGridViewWidth + 60;
+            grpSubscriptions.Width = dgvSubscriptions.Width + 20;
+        }
 
         private DataTable GetData(string sqlCommand, SqlConnection conn)
         {
@@ -213,9 +225,12 @@ namespace XDS_Subscriber
         {
             //for each patient in list...
             Cursor.Current = Cursors.WaitCursor;
+            prbLoad.Value = 0;
             string notifyEndpoint = this.txtEndpoint.Text;
             if (lstPatients.Items.Count > 0)
             {
+                prbLoad.Maximum = lstPatients.Items.Count;
+                prbLoad.Step = 1;
                 for (int i = 0; i < lstPatients.Items.Count; i++)
                 {
                     lstPatients.Items[i].Checked = false;
@@ -244,6 +259,7 @@ namespace XDS_Subscriber
                             {
                                 //lstPatients.SetItemCheckState(i, CheckState.Checked);
                                 lstPatients.Items[i].Checked = true;
+                                prbLoad.PerformStep();
                             }
                         }
                         else
@@ -402,15 +418,39 @@ namespace XDS_Subscriber
 
         private void dgvSubscriptions_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if(e.ColumnIndex == 0)
+            try
             {
-                string fullPatientId = (string)e.Value;
-                int posPatEnd = fullPatientId.IndexOf("^^^&");
-                if (fullPatientId.Substring(0,4) == "CRIS")
+                if (e.ColumnIndex == 0)
                 {
-                    e.Value = fullPatientId.Substring(4, posPatEnd - 4);
+                    string fullPatientId = (string)e.Value;
+                    int posPatEnd = fullPatientId.IndexOf("^^^&");
+                    if (fullPatientId.Substring(0, 4) == "CRIS")
+                    {
+                        e.Value = fullPatientId.Substring(4, posPatEnd - 4);
+                    }
+                }
+                else if (e.ColumnIndex == dgvSubscriptions.Columns[4].Index && e.Value != null)
+                {
+                    DataGridViewCell cell = this.dgvSubscriptions.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    cell.ToolTipText = "Click to display patient in Patient Viewer";
+                }
+                else if (e.ColumnIndex == dgvSubscriptions.Columns[5].Index && e.Value != null)
+                {
+                    DataGridViewCell cell = this.dgvSubscriptions.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    cell.ToolTipText = "Click to display patient in Byatronics";
                 }
             }
+            catch(Exception ex)
+            {
+                //don't do anything...
+            }
+        }
+
+        private void cmdUpdate_Click(object sender, EventArgs e)
+        {
+            LoadSubscriptions();
+            //dgvSubscriptions.Refresh();
+            //dgvSubscriptions.Update();
         } 
     }
 }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.cmdClose = new System.Windows.Forms.Button();
             this.grpPatients = new System.Windows.Forms.GroupBox();
+            this.prbLoad = new System.Windows.Forms.ProgressBar();
             this.lstPatients = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblSubResponse = new System.Windows.Forms.Label();
@@ -49,6 +50,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
             this.grpSubscriptions = new System.Windows.Forms.GroupBox();
+            this.cmdUpdate = new System.Windows.Forms.Button();
+            this.cmdFishcake = new System.Windows.Forms.Button();
+            this.cmdByatronics = new System.Windows.Forms.Button();
             this.grpPatients.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).BeginInit();
@@ -59,7 +63,7 @@
             // cmdClose
             // 
             this.cmdClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdClose.Location = new System.Drawing.Point(468, 381);
+            this.cmdClose.Location = new System.Drawing.Point(468, 439);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(136, 23);
             this.cmdClose.TabIndex = 0;
@@ -69,14 +73,22 @@
             // 
             // grpPatients
             // 
+            this.grpPatients.Controls.Add(this.prbLoad);
             this.grpPatients.Controls.Add(this.lstPatients);
             this.grpPatients.Controls.Add(this.lblSubResponse);
             this.grpPatients.Location = new System.Drawing.Point(10, 12);
             this.grpPatients.Name = "grpPatients";
-            this.grpPatients.Size = new System.Drawing.Size(237, 145);
+            this.grpPatients.Size = new System.Drawing.Size(237, 169);
             this.grpPatients.TabIndex = 10;
             this.grpPatients.TabStop = false;
             this.grpPatients.Text = "Patients";
+            // 
+            // prbLoad
+            // 
+            this.prbLoad.Location = new System.Drawing.Point(8, 139);
+            this.prbLoad.Name = "prbLoad";
+            this.prbLoad.Size = new System.Drawing.Size(221, 21);
+            this.prbLoad.TabIndex = 27;
             // 
             // lstPatients
             // 
@@ -230,7 +242,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 160);
+            this.label2.Location = new System.Drawing.Point(305, 168);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 24;
@@ -238,6 +250,9 @@
             // dgvSubscriptions
             // 
             this.dgvSubscriptions.AllowUserToAddRows = false;
+            this.dgvSubscriptions.AllowUserToDeleteRows = false;
+            this.dgvSubscriptions.AllowUserToResizeColumns = false;
+            this.dgvSubscriptions.AllowUserToResizeRows = false;
             this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSubscriptions.Location = new System.Drawing.Point(8, 19);
             this.dgvSubscriptions.Name = "dgvSubscriptions";
@@ -248,19 +263,53 @@
             // 
             // grpSubscriptions
             // 
+            this.grpSubscriptions.Controls.Add(this.cmdByatronics);
+            this.grpSubscriptions.Controls.Add(this.cmdFishcake);
+            this.grpSubscriptions.Controls.Add(this.cmdUpdate);
             this.grpSubscriptions.Controls.Add(this.dgvSubscriptions);
-            this.grpSubscriptions.Location = new System.Drawing.Point(10, 163);
+            this.grpSubscriptions.Location = new System.Drawing.Point(10, 187);
             this.grpSubscriptions.Name = "grpSubscriptions";
-            this.grpSubscriptions.Size = new System.Drawing.Size(594, 212);
+            this.grpSubscriptions.Size = new System.Drawing.Size(594, 246);
             this.grpSubscriptions.TabIndex = 26;
             this.grpSubscriptions.TabStop = false;
             this.grpSubscriptions.Text = "Subscriptions";
+            // 
+            // cmdUpdate
+            // 
+            this.cmdUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdUpdate.Location = new System.Drawing.Point(8, 212);
+            this.cmdUpdate.Name = "cmdUpdate";
+            this.cmdUpdate.Size = new System.Drawing.Size(136, 23);
+            this.cmdUpdate.TabIndex = 27;
+            this.cmdUpdate.Text = "Update";
+            this.cmdUpdate.UseVisualStyleBackColor = true;
+            this.cmdUpdate.Click += new System.EventHandler(this.cmdUpdate_Click);
+            // 
+            // cmdFishcake
+            // 
+            this.cmdFishcake.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdFishcake.Location = new System.Drawing.Point(159, 212);
+            this.cmdFishcake.Name = "cmdFishcake";
+            this.cmdFishcake.Size = new System.Drawing.Size(136, 23);
+            this.cmdFishcake.TabIndex = 28;
+            this.cmdFishcake.Text = "Fishcake";
+            this.cmdFishcake.UseVisualStyleBackColor = true;
+            // 
+            // cmdByatronics
+            // 
+            this.cmdByatronics.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdByatronics.Location = new System.Drawing.Point(313, 212);
+            this.cmdByatronics.Name = "cmdByatronics";
+            this.cmdByatronics.Size = new System.Drawing.Size(136, 23);
+            this.cmdByatronics.TabIndex = 29;
+            this.cmdByatronics.Text = "Byatronics";
+            this.cmdByatronics.UseVisualStyleBackColor = true;
             // 
             // frmSubscriptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 409);
+            this.ClientSize = new System.Drawing.Size(616, 467);
             this.Controls.Add(this.grpSubscriptions);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
@@ -305,6 +354,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgvSubscriptions;
         private System.Windows.Forms.GroupBox grpSubscriptions;
+        private System.Windows.Forms.ProgressBar prbLoad;
+        private System.Windows.Forms.Button cmdUpdate;
+        private System.Windows.Forms.Button cmdByatronics;
+        private System.Windows.Forms.Button cmdFishcake;
     }
 }
 
