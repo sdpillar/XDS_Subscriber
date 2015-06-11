@@ -22,6 +22,7 @@ namespace XDS_Subscriber
     {
         SqlConnection cnn = null;
         private BindingSource bindingSourceSubscriptions = new BindingSource();
+        bool patientSubscriptionProcess = false;
 
         public frmSubscriptions()
         {
@@ -32,7 +33,10 @@ namespace XDS_Subscriber
         {
             OnStartup();
             lblTerm.Text = "Months to termination: " + Properties.Settings.Default.TermLength.ToString();
-            txtTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
+            lblTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
+            tlpSubscriptions.SetToolTip(txtEndpoint, "Specify the notification endpoint...");
+            tlpSubscriptions.SetToolTip(cmdPatients, "Load patients from csv or txt files...");
+            tlpSubscriptions.SetToolTip(lblTerm, "Change the subscription term in settings...");
         }
 
         private void OnStartup()
@@ -71,28 +75,20 @@ namespace XDS_Subscriber
         private void SetupSubscriptionsControl()
         {
             dgvSubscriptions.AutoGenerateColumns = true;
-            dgvSubscriptions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvSubscriptions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            
         }
 
         private void LoadSubscriptions()
         {
-            //ToolTip btnToolTip = new ToolTip();
-            
-
-            bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, TerminationTime as Expires, CancerType, ConsumerReferenceAddress as Endpoint From dbo.MySubscriptions", cnn);
+            bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, SubscriptionDate as [Start Date], TerminationTime as [End Date], CancerType as [Cancer Type], ConsumerReferenceAddress as [Notify To] From dbo.MySubscriptions", cnn);
             dgvSubscriptions.DataSource = bindingSourceSubscriptions;
             int subscriptionCount = bindingSourceSubscriptions.Count;
             grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
 
-            int DataGridViewWidth = 0;
-            foreach (DataGridViewColumn column in dgvSubscriptions.Columns)
-            {
-                DataGridViewWidth = DataGridViewWidth + column.Width;
-            }
-            dgvSubscriptions.Width = DataGridViewWidth + 60;
-            grpSubscriptions.Width = dgvSubscriptions.Width + 20;
+            dgvSubscriptions.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            dgvSubscriptions.Update();
+            dgvSubscriptions.Refresh();
         }
 
         private DataTable GetData(string sqlCommand, SqlConnection conn)
@@ -109,7 +105,12 @@ namespace XDS_Subscriber
         private void cmdPatients_Click(object sender, EventArgs e)
         {
             label2.Text = "";
+            lstPatients.Items.Clear();
+            prbLoad.Value = 0;
             UploadPatients();
+            patientSubscriptionProcess = false;
+            lstPatients.ListViewItemSorter = new ListViewItemCheckboxComparer();
+            lstPatients.Sort();
         }
 
         private void UploadPatients()
@@ -119,7 +120,6 @@ namespace XDS_Subscriber
                 DialogResult result = dlgLoadPatients.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    lstPatients.Items.Clear();
                     string filename = dlgLoadPatients.FileName;
                     string extension = Path.GetExtension(filename);
                     using (StreamReader sr = new StreamReader(filename))
@@ -141,6 +141,21 @@ namespace XDS_Subscriber
                                 lstPatients.Items.Add(lines);
                             }
                         }
+                    }
+                    //checks whether or not listed patients already have subscriptions
+                    bool checkedSub = false;
+                    foreach(ListViewItem patientItem in lstPatients.Items)
+                    {
+                        bool subExists = checkSubscriptions(patientItem.Text);
+                        if (subExists == true)
+                        {
+                            patientItem.Checked = true;
+                            checkedSub = true;
+                        }
+                    }
+                    if(checkedSub == true)
+                    {
+                        label2.Text = "Subscriptions already exist for checked patients...";
                     }
                 }
             }
@@ -179,7 +194,7 @@ namespace XDS_Subscriber
 
         private string getTermTime()
         {
-            DateTime subTime = DateTime.Parse(txtTermDateTime.Text.Substring(18));
+            DateTime subTime = DateTime.Parse(lblTermDateTime.Text.Substring(18));
             DateTime currentTime = DateTime.Now;
 
             if (subTime < currentTime)
@@ -225,70 +240,46 @@ namespace XDS_Subscriber
         {
             //for each patient in list...
             Cursor.Current = Cursors.WaitCursor;
-            prbLoad.Value = 0;
+            label2.Text = "";
             string notifyEndpoint = this.txtEndpoint.Text;
-            if (lstPatients.Items.Count > 0)
+            if (notifyEndpoint == "")
             {
-                prbLoad.Maximum = lstPatients.Items.Count;
-                prbLoad.Step = 1;
-                for (int i = 0; i < lstPatients.Items.Count; i++)
+                MessageBox.Show("Endpoint required...");
+                txtEndpoint.Focus();
+            }
+            else
+            {
+                if (lstPatients.Items.Count > 0)
                 {
-                    lstPatients.Items[i].Checked = false;
-                }
-                if (notifyEndpoint == "")
-                {
-                    MessageBox.Show("Endpoint required...");
-                    txtEndpoint.Focus();
-                }
-                else
-                {
-                    int subscriptionCounter = -1;
-                    bool subsExist = false;
-                    //foreach(string patId in lstPatients.Items)
+                    prbLoad.Maximum = lstPatients.Items.Count;
                     for (int i = 0; i < lstPatients.Items.Count; i++)
                     {
-                        subscriptionCounter++;
-                        string patient = lstPatients.Items[i].Text;
-                        string cancerType = cmbType.Text;
-                        bool exists = checkSubscriptions(patient);
-                        if (exists == false)
+                        //only carries this out for unchecked, ie where patients don't already have subscriptions
+                        if (lstPatients.Items[i].Checked == false)
                         {
-                            bool patientSubscribed = PatientSubscribe(lstPatients.Items[i].Text, getTermTime(), notifyEndpoint, cancerType);
-                            //if true, check item
+                            string patientId = lstPatients.Items[i].Text;
+                            string termTime = getTermTime();
+                            string cancerType = cmbType.Text;
+                            bool patientSubscribed = PatientSubscribe(patientId, termTime, notifyEndpoint, cancerType);
                             if (patientSubscribed == true)
                             {
-                                //lstPatients.SetItemCheckState(i, CheckState.Checked);
                                 lstPatients.Items[i].Checked = true;
                                 prbLoad.PerformStep();
                             }
                         }
                         else
                         {
-                            subsExist = true;
+                            prbLoad.PerformStep();
                         }
                     }
-                    if (subsExist == true)
-                    {
-                        label2.Text = "Subscriptions created for checked patients.\nSubscriptions already exist for unchecked patients";
-                    }
-                    else
-                    {
-                        label2.Text = "Subscriptions created for checked patients.";
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("Load patients...");
                 }
             }
-            else
-            {
-                MessageBox.Show("Load patients...");
-            }
+            patientSubscriptionProcess = true;
             Cursor.Current = Cursors.Default;
-        }
-
-        private void nudMonths_ValueChanged(object sender, EventArgs e)
-        {
-            int months = Convert.ToInt32(nudMonths.Value);
-            DateTime myTermDateTime = DateTime.Now.AddMonths(months);
-            txtTermDateTime.Text = "Termination Date: " + myTermDateTime.ToString("dddd, MMMM d, yyyy HH:mm:ss");
         }
 
         private void CloseForm()
@@ -300,11 +291,6 @@ namespace XDS_Subscriber
         private void cmdClose_Click(object sender, EventArgs e)
         {
             CloseForm();
-        }
-
-        private void BuildSubscriptionsDataView()
-        {
-            
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -321,14 +307,15 @@ namespace XDS_Subscriber
             else if (keyData == (Keys.F4))
             {
                 this.cmdSubscribe.Enabled = true;
-                cnn.Close();
+                //cnn.Close();
                 lblTerm.Text = "Months to termination: " + Properties.Settings.Default.TermLength.ToString();
-                txtTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
+                lblTermDateTime.Text = "Termination Date: " + DateTime.Now.AddMonths(Properties.Settings.Default.TermLength).ToString("dddd, MMMM d, yyyy HH:mm:ss");
                 label2.Text = "Settings up to date...";
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        //check whether or not the subscription for stated patient already exists
         private bool checkSubscriptions(string patientId)
         {
             try
@@ -347,6 +334,7 @@ namespace XDS_Subscriber
                     if (posPatientId > -1)
                     {
                         subExists = true;
+                        break;
                     }
                 }
                 dataReader.Close();
@@ -393,11 +381,12 @@ namespace XDS_Subscriber
                 string[] endpointSplit = endpoint.Split(':');
                 string ipAddress = endpointSplit[0];
                 string port = endpointSplit[1];
+                bool ipAddressCheck = true;
 
                 if (ipAddress != "localhost")
                 {
                     IPAddress clientIpAddr;
-                    bool ipAddressCheck = IPAddress.TryParse(ipAddress, out clientIpAddr);
+                    ipAddressCheck = IPAddress.TryParse(ipAddress, out clientIpAddr);
 
                     if (ipAddressCheck == false)
                     {
@@ -409,10 +398,41 @@ namespace XDS_Subscriber
                 {
                     MessageBox.Show("Port entered is not a port...");
                 }
+                if (ipAddressCheck == true && portCheck == true)
+                {
+                    testNotifyEndpoint(ipAddress, port);
+                }
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Ip Address and/or Port is invalid");
+            }
+        }
+
+        private void testNotifyEndpoint(string host, string port)
+        {
+            bool testNotifyEndpoint = testConnection(host, int.Parse(port));
+            if (testNotifyEndpoint == true)
+            {
+                MessageBox.Show("Connectivity established to " + txtEndpoint.Text);
+            }
+            else
+            {
+                MessageBox.Show("Failed to connect to " + txtEndpoint.Text);
+            }
+        }
+
+        private string formatPatientId(string fullPatientId)
+        {
+            string patientId = fullPatientId;
+            int posPatEnd = fullPatientId.IndexOf("^^^&");
+            if (fullPatientId.Substring(0, 4) == "CRIS")
+            {
+                return fullPatientId.Substring(4, posPatEnd - 4);
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -422,22 +442,20 @@ namespace XDS_Subscriber
             {
                 if (e.ColumnIndex == 0)
                 {
-                    string fullPatientId = (string)e.Value;
-                    int posPatEnd = fullPatientId.IndexOf("^^^&");
-                    if (fullPatientId.Substring(0, 4) == "CRIS")
-                    {
-                        e.Value = fullPatientId.Substring(4, posPatEnd - 4);
-                    }
+                    e.Value = formatPatientId((string)e.Value);
                 }
-                else if (e.ColumnIndex == dgvSubscriptions.Columns[4].Index && e.Value != null)
+                int DataGridViewWidth = 0;
+                foreach (DataGridViewColumn column in dgvSubscriptions.Columns)
                 {
-                    DataGridViewCell cell = this.dgvSubscriptions.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    cell.ToolTipText = "Click to display patient in Patient Viewer";
+                    DataGridViewWidth = DataGridViewWidth + column.Width;
                 }
-                else if (e.ColumnIndex == dgvSubscriptions.Columns[5].Index && e.Value != null)
+                dgvSubscriptions.Width = DataGridViewWidth + 61;
+                grpSubscriptions.Width = dgvSubscriptions.Width + 17;
+
+                foreach (DataGridViewColumn col in dgvSubscriptions.Columns)
                 {
-                    DataGridViewCell cell = this.dgvSubscriptions.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    cell.ToolTipText = "Click to display patient in Byatronics";
+                    col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
             }
             catch(Exception ex)
@@ -448,9 +466,140 @@ namespace XDS_Subscriber
 
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
+            label5.Text = "To search for patient, double-click the PatientId column header";
             LoadSubscriptions();
-            //dgvSubscriptions.Refresh();
-            //dgvSubscriptions.Update();
+            if (dgvSubscriptions.RowCount == 0)
+            {
+                dgvSubscriptions.Width = 410;
+            }
+        }
+
+        private void tabShow_Enter(object sender, EventArgs e)
+        {
+            cmdUpdate_Click(null,null);
+        }
+
+        private void tabLoad_Enter(object sender, EventArgs e)
+        {
+            label5.Text = "";
+            if (patientSubscriptionProcess == true)
+            {
+                lstPatients.Items.Clear();
+                prbLoad.Value = 0;
+                //label1.Text = "";
+            }
+        }
+
+        private void dgvSubscriptions_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            
+            if(e.ColumnIndex == 0 && dgvSubscriptions.RowCount > 0)
+            {
+                string input = "Patient Id";
+                string patientId = "";
+                string result = ShowInputDialog(ref input);
+                //unselect any existing row selections
+                dgvSubscriptions.ClearSelection();
+                int rowCounter = -1;
+                bool patientFound = false;
+                foreach(DataGridViewRow row in dgvSubscriptions.Rows)
+                {
+                    patientId = formatPatientId(row.Cells[0].Value.ToString());
+                    rowCounter++;
+                    if (patientId.Equals(result))
+                    {
+                        row.Selected = true;
+                        //dgvSubscriptions.FirstDisplayedScrollingRowIndex = dgvSubscriptions.SelectedRows[rowCounter].Index;
+                        dgvSubscriptions.CurrentCell = dgvSubscriptions.Rows[rowCounter].Cells[0];
+                        patientFound = true;
+                        break;
+                    }
+                }
+
+                if (patientFound == false)
+                {
+                    grpSubscriptions.Text = "Patient " + result + " not found...";
+                }
+            }
+        }
+
+        private string ShowInputDialog(ref string input)
+        {
+            System.Drawing.Size size = new System.Drawing.Size(200, 60);
+            Form searchBox = new Form();
+
+            searchBox.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            searchBox.ClientSize = size;
+            searchBox.Text = "Search for patient";
+            searchBox.MaximizeBox = false;
+            searchBox.MinimizeBox = false;
+            searchBox.ControlBox = false;
+            searchBox.StartPosition = FormStartPosition.CenterParent;
+
+            System.Windows.Forms.TextBox textBox = new TextBox();
+            textBox.Size = new System.Drawing.Size(size.Width - 10, 23);
+            textBox.Location = new System.Drawing.Point(5, 5);
+            textBox.Text = input;
+            searchBox.Controls.Add(textBox);
+
+            Button okButton = new Button();
+            okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            okButton.Name = "okButton";
+            okButton.Size = new System.Drawing.Size(85, 23);
+            okButton.Text = "&OK";
+            //okButton.Location = new System.Drawing.Point(size.Width - 80 - 80, 39);
+            okButton.Location = new System.Drawing.Point(5, 30);
+            searchBox.Controls.Add(okButton);
+
+            Button cancelButton = new Button();
+            cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            cancelButton.Name = "cancelButton";
+            cancelButton.Size = new System.Drawing.Size(85, 23);
+            cancelButton.Text = "&Cancel";
+            //cancelButton.Location = new System.Drawing.Point(size.Width - 80, 39);
+            cancelButton.Location = new System.Drawing.Point(size.Width - 90, 30);
+            searchBox.Controls.Add(cancelButton);
+
+            searchBox.AcceptButton = okButton;
+            searchBox.CancelButton = cancelButton;
+
+            DialogResult result = searchBox.ShowDialog();
+            input = textBox.Text;
+            return input;
+        }
+
+        private bool testConnection(string host, int port)
+        {
+            string textToSend = DateTime.Now.ToString();
+            TcpClient client = new TcpClient();
+            try
+            {
+                client.Connect(host, port);
+                NetworkStream nwStream = client.GetStream();
+                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                client.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                client.Close();
+                return false;
+            }
+        }
+
+        private class ListViewItemCheckboxComparer : IComparer<ListViewItem>, System.Collections.IComparer
+        {
+            public int Compare(ListViewItem x, ListViewItem y)
+            {
+                // return the negative of the compare to put 1 (true) at the top;  
+                return -(x.Checked ? 1 : 0).CompareTo(y.Checked ? 1 : 0);
+            }
+
+            public int Compare(object x, object y)
+            {
+                return Compare(x as ListViewItem, y as ListViewItem);
+            }
         } 
     }
 }

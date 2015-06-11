@@ -34,36 +34,43 @@
             this.prbLoad = new System.Windows.Forms.ProgressBar();
             this.lstPatients = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lblSubResponse = new System.Windows.Forms.Label();
             this.dlgLoadPatients = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblTermDateTime = new System.Windows.Forms.Label();
             this.txtEndpoint = new System.Windows.Forms.TextBox();
             this.cmdPatients = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.nudMonths = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtTermDateTime = new System.Windows.Forms.TextBox();
             this.lblTerm = new System.Windows.Forms.Label();
             this.cmdSubscribe = new System.Windows.Forms.Button();
-            this.ttpSubscription = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
             this.grpSubscriptions = new System.Windows.Forms.GroupBox();
-            this.cmdUpdate = new System.Windows.Forms.Button();
-            this.cmdFishcake = new System.Windows.Forms.Button();
             this.cmdByatronics = new System.Windows.Forms.Button();
+            this.cmdFishcake = new System.Windows.Forms.Button();
+            this.cmdUpdate = new System.Windows.Forms.Button();
+            this.tbcSubscriptions = new System.Windows.Forms.TabControl();
+            this.tabLoad = new System.Windows.Forms.TabPage();
+            this.tabShow = new System.Windows.Forms.TabPage();
+            this.tlpSubscriptions = new System.Windows.Forms.ToolTip(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.grpPatients.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
             this.grpSubscriptions.SuspendLayout();
+            this.tbcSubscriptions.SuspendLayout();
+            this.tabLoad.SuspendLayout();
+            this.tabShow.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdClose
             // 
             this.cmdClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdClose.Location = new System.Drawing.Point(468, 439);
+            this.cmdClose.Location = new System.Drawing.Point(502, 302);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(136, 23);
             this.cmdClose.TabIndex = 0;
@@ -75,19 +82,19 @@
             // 
             this.grpPatients.Controls.Add(this.prbLoad);
             this.grpPatients.Controls.Add(this.lstPatients);
-            this.grpPatients.Controls.Add(this.lblSubResponse);
-            this.grpPatients.Location = new System.Drawing.Point(10, 12);
+            this.grpPatients.Location = new System.Drawing.Point(8, 9);
             this.grpPatients.Name = "grpPatients";
-            this.grpPatients.Size = new System.Drawing.Size(237, 169);
+            this.grpPatients.Size = new System.Drawing.Size(237, 254);
             this.grpPatients.TabIndex = 10;
             this.grpPatients.TabStop = false;
             this.grpPatients.Text = "Patients";
             // 
             // prbLoad
             // 
-            this.prbLoad.Location = new System.Drawing.Point(8, 139);
+            this.prbLoad.Location = new System.Drawing.Point(8, 227);
             this.prbLoad.Name = "prbLoad";
             this.prbLoad.Size = new System.Drawing.Size(221, 21);
+            this.prbLoad.Step = 1;
             this.prbLoad.TabIndex = 27;
             // 
             // lstPatients
@@ -97,7 +104,7 @@
             this.columnHeader1});
             this.lstPatients.Location = new System.Drawing.Point(8, 19);
             this.lstPatients.Name = "lstPatients";
-            this.lstPatients.Size = new System.Drawing.Size(221, 114);
+            this.lstPatients.Size = new System.Drawing.Size(221, 202);
             this.lstPatients.TabIndex = 23;
             this.lstPatients.UseCompatibleStateImageBehavior = false;
             this.lstPatients.View = System.Windows.Forms.View.Details;
@@ -107,35 +114,42 @@
             this.columnHeader1.Text = "PatientId";
             this.columnHeader1.Width = 200;
             // 
-            // lblSubResponse
-            // 
-            this.lblSubResponse.AutoSize = true;
-            this.lblSubResponse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubResponse.Location = new System.Drawing.Point(936, 76);
-            this.lblSubResponse.Name = "lblSubResponse";
-            this.lblSubResponse.Size = new System.Drawing.Size(0, 13);
-            this.lblSubResponse.TabIndex = 11;
-            // 
             // dlgLoadPatients
             // 
             this.dlgLoadPatients.Filter = "csv files (*.csv)|*.csv|Text files (*.txt)|*.txt";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.txtEndpoint);
             this.groupBox1.Controls.Add(this.cmdPatients);
             this.groupBox1.Controls.Add(this.cmbType);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.nudMonths);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtTermDateTime);
-            this.groupBox1.Controls.Add(this.lblTerm);
             this.groupBox1.Controls.Add(this.cmdSubscribe);
-            this.groupBox1.Location = new System.Drawing.Point(255, 12);
+            this.groupBox1.Location = new System.Drawing.Point(251, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(349, 145);
+            this.groupBox1.Size = new System.Drawing.Size(340, 158);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(267, 236);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 13);
+            this.label1.TabIndex = 33;
+            // 
+            // lblTermDateTime
+            // 
+            this.lblTermDateTime.AutoSize = true;
+            this.lblTermDateTime.Location = new System.Drawing.Point(6, 43);
+            this.lblTermDateTime.Name = "lblTermDateTime";
+            this.lblTermDateTime.Size = new System.Drawing.Size(91, 13);
+            this.lblTermDateTime.TabIndex = 32;
+            this.lblTermDateTime.Text = "Termination Date:";
+            this.lblTermDateTime.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // txtEndpoint
             // 
@@ -175,30 +189,6 @@
             this.label4.Text = "Endpoint:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // nudMonths
-            // 
-            this.nudMonths.Location = new System.Drawing.Point(246, 93);
-            this.nudMonths.Maximum = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.nudMonths.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudMonths.Name = "nudMonths";
-            this.nudMonths.Size = new System.Drawing.Size(83, 20);
-            this.nudMonths.TabIndex = 24;
-            this.nudMonths.Value = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.nudMonths.Visible = false;
-            this.nudMonths.ValueChanged += new System.EventHandler(this.nudMonths_ValueChanged);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -209,19 +199,10 @@
             this.label3.Text = "Cancer Type:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // txtTermDateTime
-            // 
-            this.txtTermDateTime.BackColor = System.Drawing.SystemColors.Control;
-            this.txtTermDateTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtTermDateTime.Location = new System.Drawing.Point(8, 120);
-            this.txtTermDateTime.Name = "txtTermDateTime";
-            this.txtTermDateTime.Size = new System.Drawing.Size(296, 13);
-            this.txtTermDateTime.TabIndex = 25;
-            // 
             // lblTerm
             // 
             this.lblTerm.AutoSize = true;
-            this.lblTerm.Location = new System.Drawing.Point(5, 93);
+            this.lblTerm.Location = new System.Drawing.Point(6, 16);
             this.lblTerm.Name = "lblTerm";
             this.lblTerm.Size = new System.Drawing.Size(111, 13);
             this.lblTerm.TabIndex = 23;
@@ -231,7 +212,7 @@
             // cmdSubscribe
             // 
             this.cmdSubscribe.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdSubscribe.Location = new System.Drawing.Point(210, 56);
+            this.cmdSubscribe.Location = new System.Drawing.Point(210, 54);
             this.cmdSubscribe.Name = "cmdSubscribe";
             this.cmdSubscribe.Size = new System.Drawing.Size(119, 23);
             this.cmdSubscribe.TabIndex = 22;
@@ -242,7 +223,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(305, 168);
+            this.label2.Location = new System.Drawing.Point(17, 302);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 24;
@@ -255,11 +236,14 @@
             this.dgvSubscriptions.AllowUserToResizeRows = false;
             this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSubscriptions.Location = new System.Drawing.Point(8, 19);
+            this.dgvSubscriptions.MultiSelect = false;
             this.dgvSubscriptions.Name = "dgvSubscriptions";
+            this.dgvSubscriptions.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 187);
+            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 200);
             this.dgvSubscriptions.TabIndex = 25;
             this.dgvSubscriptions.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSubscriptions_CellFormatting);
+            this.dgvSubscriptions.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSubscriptions_ColumnHeaderMouseDoubleClick);
             // 
             // grpSubscriptions
             // 
@@ -267,17 +251,37 @@
             this.grpSubscriptions.Controls.Add(this.cmdFishcake);
             this.grpSubscriptions.Controls.Add(this.cmdUpdate);
             this.grpSubscriptions.Controls.Add(this.dgvSubscriptions);
-            this.grpSubscriptions.Location = new System.Drawing.Point(10, 187);
+            this.grpSubscriptions.Location = new System.Drawing.Point(8, 6);
             this.grpSubscriptions.Name = "grpSubscriptions";
-            this.grpSubscriptions.Size = new System.Drawing.Size(594, 246);
+            this.grpSubscriptions.Size = new System.Drawing.Size(616, 257);
             this.grpSubscriptions.TabIndex = 26;
             this.grpSubscriptions.TabStop = false;
             this.grpSubscriptions.Text = "Subscriptions";
             // 
+            // cmdByatronics
+            // 
+            this.cmdByatronics.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdByatronics.Location = new System.Drawing.Point(311, 228);
+            this.cmdByatronics.Name = "cmdByatronics";
+            this.cmdByatronics.Size = new System.Drawing.Size(136, 23);
+            this.cmdByatronics.TabIndex = 29;
+            this.cmdByatronics.Text = "Byotronics";
+            this.cmdByatronics.UseVisualStyleBackColor = true;
+            // 
+            // cmdFishcake
+            // 
+            this.cmdFishcake.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdFishcake.Location = new System.Drawing.Point(157, 228);
+            this.cmdFishcake.Name = "cmdFishcake";
+            this.cmdFishcake.Size = new System.Drawing.Size(136, 23);
+            this.cmdFishcake.TabIndex = 28;
+            this.cmdFishcake.Text = "Fishcake";
+            this.cmdFishcake.UseVisualStyleBackColor = true;
+            // 
             // cmdUpdate
             // 
             this.cmdUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdUpdate.Location = new System.Drawing.Point(8, 212);
+            this.cmdUpdate.Location = new System.Drawing.Point(6, 228);
             this.cmdUpdate.Name = "cmdUpdate";
             this.cmdUpdate.Size = new System.Drawing.Size(136, 23);
             this.cmdUpdate.TabIndex = 27;
@@ -285,35 +289,69 @@
             this.cmdUpdate.UseVisualStyleBackColor = true;
             this.cmdUpdate.Click += new System.EventHandler(this.cmdUpdate_Click);
             // 
-            // cmdFishcake
+            // tbcSubscriptions
             // 
-            this.cmdFishcake.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdFishcake.Location = new System.Drawing.Point(159, 212);
-            this.cmdFishcake.Name = "cmdFishcake";
-            this.cmdFishcake.Size = new System.Drawing.Size(136, 23);
-            this.cmdFishcake.TabIndex = 28;
-            this.cmdFishcake.Text = "Fishcake";
-            this.cmdFishcake.UseVisualStyleBackColor = true;
+            this.tbcSubscriptions.Controls.Add(this.tabLoad);
+            this.tbcSubscriptions.Controls.Add(this.tabShow);
+            this.tbcSubscriptions.Location = new System.Drawing.Point(0, 0);
+            this.tbcSubscriptions.Name = "tbcSubscriptions";
+            this.tbcSubscriptions.SelectedIndex = 0;
+            this.tbcSubscriptions.Size = new System.Drawing.Size(642, 295);
+            this.tbcSubscriptions.TabIndex = 27;
             // 
-            // cmdByatronics
+            // tabLoad
             // 
-            this.cmdByatronics.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdByatronics.Location = new System.Drawing.Point(313, 212);
-            this.cmdByatronics.Name = "cmdByatronics";
-            this.cmdByatronics.Size = new System.Drawing.Size(136, 23);
-            this.cmdByatronics.TabIndex = 29;
-            this.cmdByatronics.Text = "Byatronics";
-            this.cmdByatronics.UseVisualStyleBackColor = true;
+            this.tabLoad.BackColor = System.Drawing.Color.Transparent;
+            this.tabLoad.Controls.Add(this.label1);
+            this.tabLoad.Controls.Add(this.groupBox1);
+            this.tabLoad.Controls.Add(this.grpPatients);
+            this.tabLoad.Location = new System.Drawing.Point(4, 22);
+            this.tabLoad.Name = "tabLoad";
+            this.tabLoad.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLoad.Size = new System.Drawing.Size(634, 269);
+            this.tabLoad.TabIndex = 0;
+            this.tabLoad.Text = "Load Subscriptions";
+            this.tabLoad.UseVisualStyleBackColor = true;
+            this.tabLoad.Enter += new System.EventHandler(this.tabLoad_Enter);
+            // 
+            // tabShow
+            // 
+            this.tabShow.Controls.Add(this.grpSubscriptions);
+            this.tabShow.Location = new System.Drawing.Point(4, 22);
+            this.tabShow.Name = "tabShow";
+            this.tabShow.Padding = new System.Windows.Forms.Padding(3);
+            this.tabShow.Size = new System.Drawing.Size(634, 269);
+            this.tabShow.TabIndex = 1;
+            this.tabShow.Text = "Show Subscriptions";
+            this.tabShow.UseVisualStyleBackColor = true;
+            this.tabShow.Enter += new System.EventHandler(this.tabShow_Enter);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 300);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 13);
+            this.label5.TabIndex = 28;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblTerm);
+            this.groupBox2.Controls.Add(this.lblTermDateTime);
+            this.groupBox2.Location = new System.Drawing.Point(10, 85);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(320, 65);
+            this.groupBox2.TabIndex = 33;
+            this.groupBox2.TabStop = false;
             // 
             // frmSubscriptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 467);
-            this.Controls.Add(this.grpSubscriptions);
+            this.ClientSize = new System.Drawing.Size(646, 328);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tbcSubscriptions);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.grpPatients);
             this.Controls.Add(this.cmdClose);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
@@ -321,12 +359,16 @@
             this.Text = "Subscriptions";
             this.Load += new System.EventHandler(this.frmSubscriptions_Load);
             this.grpPatients.ResumeLayout(false);
-            this.grpPatients.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonths)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
             this.grpSubscriptions.ResumeLayout(false);
+            this.tbcSubscriptions.ResumeLayout(false);
+            this.tabLoad.ResumeLayout(false);
+            this.tabLoad.PerformLayout();
+            this.tabShow.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -336,18 +378,14 @@
 
         private System.Windows.Forms.Button cmdClose;
         private System.Windows.Forms.GroupBox grpPatients;
-        private System.Windows.Forms.Label lblSubResponse;
         private System.Windows.Forms.OpenFileDialog dlgLoadPatients;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button cmdPatients;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtTermDateTime;
-        private System.Windows.Forms.NumericUpDown nudMonths;
         private System.Windows.Forms.Label lblTerm;
         private System.Windows.Forms.Button cmdSubscribe;
-        private System.Windows.Forms.ToolTip ttpSubscription;
         private System.Windows.Forms.ListView lstPatients;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TextBox txtEndpoint;
@@ -358,6 +396,14 @@
         private System.Windows.Forms.Button cmdUpdate;
         private System.Windows.Forms.Button cmdByatronics;
         private System.Windows.Forms.Button cmdFishcake;
+        private System.Windows.Forms.TabControl tbcSubscriptions;
+        private System.Windows.Forms.TabPage tabLoad;
+        private System.Windows.Forms.TabPage tabShow;
+        private System.Windows.Forms.Label lblTermDateTime;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolTip tlpSubscriptions;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 

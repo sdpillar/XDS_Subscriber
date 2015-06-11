@@ -12,7 +12,7 @@ namespace XDS_Subscriber
 {
     public partial class frmSettings : Form
     {
-        bool settingsChanged = false;
+        //bool settingsChanged = false;
         int currentHashValue;
         public frmSettings()
         {
