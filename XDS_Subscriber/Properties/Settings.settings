@@ -40,5 +40,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=SP-DL-IN\SQLEXPRESS;Initial Catalog=XdsRegistry.XdsDataBase;User ID=sdpillar</Value>
     </Setting>
+    <Setting Name="UserDb" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Subscriber_Users</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

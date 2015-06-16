@@ -153,5 +153,17 @@ namespace XDS_Subscriber.Properties {
                 return ((string)(this["XdsRegistry_XdsDataBaseConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Subscriber_Users")]
+        public string UserDb {
+            get {
+                return ((string)(this["UserDb"]));
+            }
+            set {
+                this["UserDb"] = value;
+            }
+        }
     }
 }

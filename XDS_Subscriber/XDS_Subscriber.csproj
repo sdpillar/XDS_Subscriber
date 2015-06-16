@@ -73,6 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SubscriptionLog.cs" />
+    <Compile Include="UserDatabase.cs" />
     <Compile Include="frmSubscriptions.cs">
       <SubType>Form</SubType>
     </Compile>
