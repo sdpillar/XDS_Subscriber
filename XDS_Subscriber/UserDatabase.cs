@@ -99,7 +99,7 @@ namespace XDS_Subscriber
                     command.ExecuteNonQuery();
                     subLog.WriteLog("Users table created...");
 
-                    command.CommandText = "INSERT INTO Users (username, surname, forename, Admin, Password, passchanged) VALUES ('admin','admin','admin',1,'Password1', 0)";
+                    command.CommandText = "INSERT INTO Users (username, surname, forename, Admin, Password, passchanged) VALUES ('admin','admin','admin',1,'admin', 0)";
                     subLog.WriteLog("CommandText - '" + command.CommandText + "'");
                     command.ExecuteNonQuery();
                     subLog.WriteLog("Admin user inserted...");

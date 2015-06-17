@@ -36,7 +36,20 @@ namespace XDS_Subscriber
 
         private void frmSubscriptions_Load(object sender, EventArgs e)
         {
-            subLog.WriteLog("Subscription form loaded...");
+            //tbcLogin.Visible = false;
+            
+            tbcSubscriptions.Visible = true;
+            
+            this.Text = "Subscriptions - " + myDatabase.CurrentUser;
+            OnStartup();
+            int subscriptionCount = bindingSourceSubscriptions.Count;
+            if (subscriptionCount == 0)
+            {
+                tbcSubscriptions.SelectedTab = tabLoad;
+            }
+            
+            
+            /*subLog.WriteLog("Subscription form loaded...");
             //check database exists
             subLog.WriteLog("User database - " + Properties.Settings.Default.UserDb);
             userConn = myDatabase.openConnection(Properties.Settings.Default.UserDb);
@@ -59,15 +72,23 @@ namespace XDS_Subscriber
                 {
                     //log Database exists and Users table created
                     txtUsername.Focus();
+
+                    tbcLogin.Visible = false;
+                    tbcSubscriptions.Visible = true;
+                    myDatabase.CurrentUser = txtUsername.Text;
+                    this.Text = "Subscriptions - " + myDatabase.CurrentUser;
+                    OnStartup();
+
+
                 }
             }
             else
             {
                 MessageBox.Show("Not able to conect to Users database");
-            }
+            }*/
         }
 
-        private void cmdLogin_Click(object sender, EventArgs e)
+        /*private void cmdLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
@@ -105,6 +126,7 @@ namespace XDS_Subscriber
                         lblConfirm.Visible = true;
                         cmdUpdatePassword.Visible = true;
                         cmdLogin.Visible = false;
+                        this.AcceptButton = this.cmdUpdatePassword;
                         txtPassword.Focus();
                     }
                 }
@@ -114,10 +136,10 @@ namespace XDS_Subscriber
                     MessageBox.Show("User login failed");
                 }
             }
-        }
+        }*/
 
 
-        private void cmdCreate_Click(object sender, EventArgs e)
+        /*private void cmdCreate_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string surname = txtPassword.Text;
@@ -136,9 +158,9 @@ namespace XDS_Subscriber
                 MessageBox.Show("Error in setting up user");
                 txtUsername.Focus();
             }
-        }
+        }*/
 
-        private void cmdUpdatePassword_Click(object sender, EventArgs e)
+        /*private void cmdUpdatePassword_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string password1 = txtPassword.Text;
@@ -171,6 +193,22 @@ namespace XDS_Subscriber
                     MessageBox.Show("A problem occurred...");
                 }
             }
+        }*/
+
+        public void LoadSettings()
+        {
+            txtDbServer.Text = Properties.Settings.Default.Server;
+            txtDatabase.Text = Properties.Settings.Default.Database;
+            txtUser.Text = Properties.Settings.Default.User;
+            txtDbPassword.Text = Properties.Settings.Default.Password;
+            txtMirth.Text = Properties.Settings.Default.MirthInstance;
+            txtSubscribePort.Text = Properties.Settings.Default.SubscribePort.ToString();
+            txtUnsubscribePort.Text = Properties.Settings.Default.UnsubscribePort.ToString();
+            txtLength.Text = Properties.Settings.Default.TermLength.ToString();
+            txtPatViewer.Text = Properties.Settings.Default.FishcakeServer;
+            txtPatViewerPort.Text = Properties.Settings.Default.FishcakePort.ToString();
+            currentHashValue = CalculateHash();
+            cmdSaveSettings.Text = "EXIT";
         }
 
         private void OnStartup()
@@ -221,6 +259,17 @@ namespace XDS_Subscriber
                 grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
 
                 dgvSubscriptions.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+                int dataGridViewHeight = subscriptionCount * 22;
+                if (dataGridViewHeight < 440)
+                {
+                    dgvSubscriptions.Height = dataGridViewHeight;
+                }
+                else
+                {
+                    dgvSubscriptions.Height = 440;
+                }
+
+                //dgvSubscriptions.Height = subscriptionCount * 22;
 
                 dgvSubscriptions.Update();
                 dgvSubscriptions.Refresh();
@@ -500,6 +549,8 @@ namespace XDS_Subscriber
                 userConn.Close();
             }
             subLog.WriteLog("Closing Subscription form...");
+            frmLogin loginForm = new frmLogin();
+            loginForm.Close();
             this.Close();
         }
 
@@ -510,7 +561,13 @@ namespace XDS_Subscriber
             {
                 try
                 {
-                    subLog.WriteLog("Login tab opened...");
+                    this.Hide();
+                    frmLogin loginForm = new frmLogin();
+                    loginForm.Show();
+                    
+                    
+                    
+                    /*subLog.WriteLog("Login tab opened...");
                     tbcSubscriptions.Visible = false;
                     tbcSettings.Visible = false;
                     tbcLogin.Visible = true;
@@ -525,8 +582,9 @@ namespace XDS_Subscriber
                     label5.Text = "";
                     cmdCreate.Visible = false;
                     cmdLogin.Visible = true;
+                    this.AcceptButton = this.cmdLogin;
                     myDatabase.CurrentUser = "";
-                    txtUsername.Focus();
+                    txtUsername.Focus();*/
                 }
                 catch(Exception ex)
                 {
@@ -535,7 +593,7 @@ namespace XDS_Subscriber
                 }
             }
             // create new user
-            else if((keyData == (Keys.Control | Keys.N)) && myDatabase.CurrentUser == "admin") //only allow for Admin user
+            /*else if((keyData == (Keys.Control | Keys.N)) && myDatabase.CurrentUser == "admin") //only allow for Admin user
             {
 
                 try
@@ -554,8 +612,9 @@ namespace XDS_Subscriber
                     txtConfirm.Text = "";
                     txtConfirm.Visible = true;
                     cmdLogin.Visible = false;
-                    cmdUpdate.Visible = false;
+                    cmdUpdatePassword.Visible = false;
                     cmdCreate.Visible = true;
+                    this.AcceptButton = this.cmdCreate;
                     lblConfirm.Visible = true;
                     label5.Text = "";
                 }
@@ -564,9 +623,9 @@ namespace XDS_Subscriber
                     string exceptionMsg = ex.Message;
                     subLog.WriteLog("New User tab shortcut exception - " + exceptionMsg);
                 }
-            }
+            }*/
             // view/change settings
-            else if ((keyData == (Keys.Control | Keys.S)) && tbcLogin.Visible == true && txtUsername.Text == "support" && txtPassword.Text == "support")
+            /*else if ((keyData == (Keys.Control | Keys.S)) && tbcLogin.Visible == true && txtUsername.Text == "support" && txtPassword.Text == "support")
             {
                 try
                 {
@@ -590,13 +649,13 @@ namespace XDS_Subscriber
                     string exceptionMsg = ex.Message;
                     subLog.WriteLog("Settings tab shortcut exception - " + exceptionMsg);
                 }
-            }
+            }*/
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private int CalculateHash()
         {
-            string[] txtStrings = new string[] { txtDbServer.Text, txtDatabase.Text, txtUser.Text, txtPassword.Text, txtMirth.Text, txtSubscribePort.Text, txtUnsubscribePort.Text, txtLength.Text };
+            string[] txtStrings = new string[] { txtDbServer.Text, txtDatabase.Text, txtUser.Text, txtDbPassword.Text, txtMirth.Text, txtSubscribePort.Text, txtUnsubscribePort.Text, txtLength.Text, txtPatViewer.Text, txtPatViewerPort.Text };
             string hashString = String.Concat(txtStrings);
             int hash = hashString.GetHashCode();
             return hash;
@@ -741,9 +800,9 @@ namespace XDS_Subscriber
                 {
                     DataGridViewWidth = DataGridViewWidth + column.Width;
                 }
-                dgvSubscriptions.Width = DataGridViewWidth + 61;
+                dgvSubscriptions.Width = DataGridViewWidth + 20;
                 grpSubscriptions.Width = dgvSubscriptions.Width + 17;
-
+                //tbcSubscriptions.Width = grpSubscriptions.Width + 27;
                 foreach (DataGridViewColumn col in dgvSubscriptions.Columns)
                 {
                     col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -756,9 +815,8 @@ namespace XDS_Subscriber
             }
         }
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void tbcSubscriptions_DoubleClick(object sender, EventArgs e)
         {
-            label5.Text = "To search for patient, double-click the PatientId column header";
             LoadSubscriptions();
             if (dgvSubscriptions.RowCount == 0)
             {
@@ -768,7 +826,11 @@ namespace XDS_Subscriber
 
         private void tabShow_Enter(object sender, EventArgs e)
         {
-            cmdUpdate_Click(null,null);
+            LoadSubscriptions();
+            if (dgvSubscriptions.RowCount == 0)
+            {
+                dgvSubscriptions.Width = 410;
+            }
         }
 
         private void tabLoad_Enter(object sender, EventArgs e)
@@ -778,7 +840,6 @@ namespace XDS_Subscriber
             {
                 lstPatients.Items.Clear();
                 prbLoad.Value = 0;
-                //label1.Text = "";
             }
         }
 
@@ -812,6 +873,22 @@ namespace XDS_Subscriber
                 {
                     grpSubscriptions.Text = "Patient " + result + " not found...";
                 }
+            }
+        }
+
+        private void dgvSubscriptions_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex > -1)
+            {
+                string patientId = dgvSubscriptions[e.ColumnIndex, e.RowIndex].Value.ToString();
+                patientId = formatPatientId(patientId);
+                MessageBox.Show(patientId);
+                //string fishcakeConnString = Properties.Settings.Default.FishcakeServer + ":" + Properties.Settings.Default.FishcakePort + "/patient/" + patientId;
+                string fishcakeConnString = Properties.Settings.Default.FishcakeServer + ":" + Properties.Settings.Default.FishcakePort + "/patient/21399";
+                System.Diagnostics.Process.Start(fishcakeConnString);
+
+                //System.Diagnostics.Process.Start("http://ukrc_cris:8777/patient/21399");
+                //System.Diagnostics.Process.Start("http://ukrc_cris:8777/patient/21240");
             }
         }
 
@@ -898,13 +975,13 @@ namespace XDS_Subscriber
             }
         }
 
-        private void txtPassword_Leave(object sender, EventArgs e)
+        /*private void txtPassword_Leave(object sender, EventArgs e)
         {
             if(myDatabase.CurrentUser == "")
             {
                 cmdLogin.Focus();
             }
-        }
+        }*/
 
         private void txtSubscribePort_TextChanged(object sender, EventArgs e)
         {
@@ -948,7 +1025,8 @@ namespace XDS_Subscriber
             if (currentHash != currentHashValue)
             {
                 currentHashValue = CalculateHash();
-                cmdSaveSettings.Enabled = true;
+                //cmdSaveSettings.Enabled = true;
+                cmdSaveSettings.Text = "SAVE /& EXIT";
                 subLog.WriteLog("Settings have changed...");
             }
         }
@@ -1019,18 +1097,53 @@ namespace XDS_Subscriber
                 Properties.Settings.Default.SubscribePort = int.Parse(txtSubscribePort.Text);
                 Properties.Settings.Default.UnsubscribePort = int.Parse(txtUnsubscribePort.Text);
                 Properties.Settings.Default.TermLength = int.Parse(txtLength.Text);
+                Properties.Settings.Default.FishcakeServer = txtPatViewer.Text;
+                Properties.Settings.Default.FishcakePort = int.Parse(txtPatViewerPort.Text);
                 Properties.Settings.Default.HashCode = CalculateHash();
                 Properties.Settings.Default.Save();
                 //cmdSave.Enabled = false;
                 tbcSettings.Visible = false;
-                txtUsername.Text = "";
-                txtPassword.Text = "";
-                tbcLogin.Visible = true;
+
+                this.Hide();
+                frmLogin loginForm = new frmLogin();
+                loginForm.Show();
+
+                //txtUsername.Text = "";
+                //txtPassword.Text = "";
+                //tbcLogin.Visible = true;
             }
             catch(Exception ex)
             {
                 string exceptionMsg = ex.Message;
                 subLog.WriteLog("cmdSaveSettings_Click exception - " + exceptionMsg);
+            }
+        }
+
+        private void txtPatViewer_Leave(object sender, EventArgs e)
+        {
+            HashChanged();
+        }
+
+        private void txtPatViewerPort_Leave(object sender, EventArgs e)
+        {
+            HashChanged();
+        }
+
+        private void txtPatViewerPort_TextChanged(object sender, EventArgs e)
+        {
+            string portString = txtPatViewerPort.Text;
+            if (portString.Length > 4)
+            {
+                txtPatViewerPort.Text = portString.Substring(0, 4);
+                MessageBox.Show("Port number cannot be more than 4 digits");
+            }
+
+            for (int i = 0; i < portString.Length; i++)
+            {
+                if (!char.IsNumber(portString[i]))
+                {
+                    MessageBox.Show("Please insert a valid number");
+                }
             }
         }
     }

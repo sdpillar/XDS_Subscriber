@@ -165,5 +165,29 @@ namespace XDS_Subscriber.Properties {
                 this["UserDb"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ukrc_cris")]
+        public string FishcakeServer {
+            get {
+                return ((string)(this["FishcakeServer"]));
+            }
+            set {
+                this["FishcakeServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8777")]
+        public int FishcakePort {
+            get {
+                return ((int)(this["FishcakePort"]));
+            }
+            set {
+                this["FishcakePort"] = value;
+            }
+        }
     }
 }

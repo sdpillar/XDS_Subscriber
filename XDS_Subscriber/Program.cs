@@ -16,7 +16,8 @@ namespace XDS_Subscriber
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmSubscriptions());
+            //Application.Run(new frmSubscriptions());
+            Application.Run(new frmLogin());
         }
     }
 }

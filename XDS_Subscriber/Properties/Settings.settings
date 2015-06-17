@@ -43,5 +43,11 @@
     <Setting Name="UserDb" Type="System.String" Scope="User">
       <Value Profile="(Default)">Subscriber_Users</Value>
     </Setting>
+    <Setting Name="FishcakeServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://ukrc_cris</Value>
+    </Setting>
+    <Setting Name="FishcakePort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8777</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

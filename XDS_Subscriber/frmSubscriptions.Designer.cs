@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmdClose = new System.Windows.Forms.Button();
             this.grpPatients = new System.Windows.Forms.GroupBox();
             this.prbLoad = new System.Windows.Forms.ProgressBar();
@@ -49,27 +51,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
             this.grpSubscriptions = new System.Windows.Forms.GroupBox();
-            this.cmdByatronics = new System.Windows.Forms.Button();
-            this.cmdFishcake = new System.Windows.Forms.Button();
-            this.cmdUpdate = new System.Windows.Forms.Button();
             this.tbcSubscriptions = new System.Windows.Forms.TabControl();
-            this.tabLoad = new System.Windows.Forms.TabPage();
             this.tabShow = new System.Windows.Forms.TabPage();
+            this.tabLoad = new System.Windows.Forms.TabPage();
             this.tlpSubscriptions = new System.Windows.Forms.ToolTip(this.components);
             this.label5 = new System.Windows.Forms.Label();
-            this.tbcLogin = new System.Windows.Forms.TabControl();
-            this.tabLogin = new System.Windows.Forms.TabPage();
-            this.cmdCreate = new System.Windows.Forms.Button();
-            this.cmdUpdatePassword = new System.Windows.Forms.Button();
-            this.lblConfirm = new System.Windows.Forms.Label();
-            this.txtConfirm = new System.Windows.Forms.TextBox();
-            this.cmdLogin = new System.Windows.Forms.Button();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
             this.tbcSettings = new System.Windows.Forms.TabControl();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.cmdSaveSettings = new System.Windows.Forms.Button();
@@ -92,29 +78,32 @@
             this.txtUser = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtDbPassword = new System.Windows.Forms.TextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtPatViewer = new System.Windows.Forms.TextBox();
+            this.txtPatViewerPort = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.grpPatients.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
             this.grpSubscriptions.SuspendLayout();
             this.tbcSubscriptions.SuspendLayout();
-            this.tabLoad.SuspendLayout();
             this.tabShow.SuspendLayout();
-            this.tbcLogin.SuspendLayout();
-            this.tabLogin.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tabLoad.SuspendLayout();
             this.tbcSettings.SuspendLayout();
             this.tabSettings.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdClose
             // 
             this.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdClose.Location = new System.Drawing.Point(504, 293);
+            this.cmdClose.Location = new System.Drawing.Point(469, 529);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(136, 23);
             this.cmdClose.TabIndex = 0;
@@ -277,7 +266,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 302);
+            this.label2.Location = new System.Drawing.Point(17, 300);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 13);
             this.label2.TabIndex = 24;
@@ -288,70 +277,62 @@
             this.dgvSubscriptions.AllowUserToDeleteRows = false;
             this.dgvSubscriptions.AllowUserToResizeColumns = false;
             this.dgvSubscriptions.AllowUserToResizeRows = false;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Blue;
+            this.dgvSubscriptions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.OrangeRed;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSubscriptions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSubscriptions.Location = new System.Drawing.Point(8, 19);
             this.dgvSubscriptions.MultiSelect = false;
             this.dgvSubscriptions.Name = "dgvSubscriptions";
+            this.dgvSubscriptions.RowHeadersVisible = false;
             this.dgvSubscriptions.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 200);
+            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 305);
             this.dgvSubscriptions.TabIndex = 25;
+            this.dgvSubscriptions.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSubscriptions_CellContentDoubleClick);
             this.dgvSubscriptions.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSubscriptions_CellFormatting);
             this.dgvSubscriptions.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSubscriptions_ColumnHeaderMouseDoubleClick);
             // 
             // grpSubscriptions
             // 
-            this.grpSubscriptions.Controls.Add(this.cmdByatronics);
-            this.grpSubscriptions.Controls.Add(this.cmdFishcake);
-            this.grpSubscriptions.Controls.Add(this.cmdUpdate);
             this.grpSubscriptions.Controls.Add(this.dgvSubscriptions);
             this.grpSubscriptions.Location = new System.Drawing.Point(8, 6);
             this.grpSubscriptions.Name = "grpSubscriptions";
-            this.grpSubscriptions.Size = new System.Drawing.Size(616, 257);
-            this.grpSubscriptions.TabIndex = 26;
+            this.grpSubscriptions.Size = new System.Drawing.Size(583, 470);
+            this.grpSubscriptions.TabIndex = 1;
             this.grpSubscriptions.TabStop = false;
             this.grpSubscriptions.Text = "Subscriptions";
             // 
-            // cmdByatronics
-            // 
-            this.cmdByatronics.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdByatronics.Location = new System.Drawing.Point(311, 228);
-            this.cmdByatronics.Name = "cmdByatronics";
-            this.cmdByatronics.Size = new System.Drawing.Size(136, 23);
-            this.cmdByatronics.TabIndex = 29;
-            this.cmdByatronics.Text = "Byotronics";
-            this.cmdByatronics.UseVisualStyleBackColor = true;
-            // 
-            // cmdFishcake
-            // 
-            this.cmdFishcake.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdFishcake.Location = new System.Drawing.Point(157, 228);
-            this.cmdFishcake.Name = "cmdFishcake";
-            this.cmdFishcake.Size = new System.Drawing.Size(136, 23);
-            this.cmdFishcake.TabIndex = 28;
-            this.cmdFishcake.Text = "Fishcake";
-            this.cmdFishcake.UseVisualStyleBackColor = true;
-            // 
-            // cmdUpdate
-            // 
-            this.cmdUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdUpdate.Location = new System.Drawing.Point(6, 228);
-            this.cmdUpdate.Name = "cmdUpdate";
-            this.cmdUpdate.Size = new System.Drawing.Size(136, 23);
-            this.cmdUpdate.TabIndex = 27;
-            this.cmdUpdate.Text = "Update";
-            this.cmdUpdate.UseVisualStyleBackColor = true;
-            this.cmdUpdate.Click += new System.EventHandler(this.cmdUpdate_Click);
-            // 
             // tbcSubscriptions
             // 
-            this.tbcSubscriptions.Controls.Add(this.tabLoad);
             this.tbcSubscriptions.Controls.Add(this.tabShow);
+            this.tbcSubscriptions.Controls.Add(this.tabLoad);
             this.tbcSubscriptions.Location = new System.Drawing.Point(0, 0);
             this.tbcSubscriptions.Name = "tbcSubscriptions";
             this.tbcSubscriptions.SelectedIndex = 0;
-            this.tbcSubscriptions.Size = new System.Drawing.Size(640, 290);
-            this.tbcSubscriptions.TabIndex = 27;
+            this.tbcSubscriptions.Size = new System.Drawing.Size(605, 523);
+            this.tbcSubscriptions.TabIndex = 1;
+            this.tbcSubscriptions.DoubleClick += new System.EventHandler(this.tbcSubscriptions_DoubleClick);
+            // 
+            // tabShow
+            // 
+            this.tabShow.Controls.Add(this.grpSubscriptions);
+            this.tabShow.Location = new System.Drawing.Point(4, 22);
+            this.tabShow.Name = "tabShow";
+            this.tabShow.Padding = new System.Windows.Forms.Padding(3);
+            this.tabShow.Size = new System.Drawing.Size(597, 497);
+            this.tabShow.TabIndex = 1;
+            this.tabShow.Text = "Show Subscriptions";
+            this.tabShow.UseVisualStyleBackColor = true;
+            this.tabShow.Enter += new System.EventHandler(this.tabShow_Enter);
             // 
             // tabLoad
             // 
@@ -362,23 +343,11 @@
             this.tabLoad.Location = new System.Drawing.Point(4, 22);
             this.tabLoad.Name = "tabLoad";
             this.tabLoad.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoad.Size = new System.Drawing.Size(632, 264);
+            this.tabLoad.Size = new System.Drawing.Size(601, 497);
             this.tabLoad.TabIndex = 0;
             this.tabLoad.Text = "Load Subscriptions";
             this.tabLoad.UseVisualStyleBackColor = true;
             this.tabLoad.Enter += new System.EventHandler(this.tabLoad_Enter);
-            // 
-            // tabShow
-            // 
-            this.tabShow.Controls.Add(this.grpSubscriptions);
-            this.tabShow.Location = new System.Drawing.Point(4, 22);
-            this.tabShow.Name = "tabShow";
-            this.tabShow.Padding = new System.Windows.Forms.Padding(3);
-            this.tabShow.Size = new System.Drawing.Size(632, 264);
-            this.tabShow.TabIndex = 1;
-            this.tabShow.Text = "Show Subscriptions";
-            this.tabShow.UseVisualStyleBackColor = true;
-            this.tabShow.Enter += new System.EventHandler(this.tabShow_Enter);
             // 
             // label5
             // 
@@ -388,164 +357,19 @@
             this.label5.Size = new System.Drawing.Size(0, 13);
             this.label5.TabIndex = 28;
             // 
-            // tbcLogin
-            // 
-            this.tbcLogin.Controls.Add(this.tabLogin);
-            this.tbcLogin.Location = new System.Drawing.Point(0, 0);
-            this.tbcLogin.Name = "tbcLogin";
-            this.tbcLogin.SelectedIndex = 0;
-            this.tbcLogin.Size = new System.Drawing.Size(640, 290);
-            this.tbcLogin.TabIndex = 29;
-            // 
-            // tabLogin
-            // 
-            this.tabLogin.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.tabLogin.Controls.Add(this.cmdCreate);
-            this.tabLogin.Controls.Add(this.cmdUpdatePassword);
-            this.tabLogin.Controls.Add(this.lblConfirm);
-            this.tabLogin.Controls.Add(this.txtConfirm);
-            this.tabLogin.Controls.Add(this.cmdLogin);
-            this.tabLogin.Controls.Add(this.lblPassword);
-            this.tabLogin.Controls.Add(this.label11);
-            this.tabLogin.Controls.Add(this.txtPassword);
-            this.tabLogin.Controls.Add(this.txtUsername);
-            this.tabLogin.Controls.Add(this.panel2);
-            this.tabLogin.Location = new System.Drawing.Point(4, 22);
-            this.tabLogin.Name = "tabLogin";
-            this.tabLogin.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogin.Size = new System.Drawing.Size(632, 264);
-            this.tabLogin.TabIndex = 0;
-            this.tabLogin.Text = "Log In";
-            // 
-            // cmdCreate
-            // 
-            this.cmdCreate.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue;
-            this.cmdCreate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.cmdCreate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cmdCreate.Location = new System.Drawing.Point(516, 37);
-            this.cmdCreate.Name = "cmdCreate";
-            this.cmdCreate.Size = new System.Drawing.Size(75, 58);
-            this.cmdCreate.TabIndex = 14;
-            this.cmdCreate.Text = "CREATE";
-            this.cmdCreate.UseVisualStyleBackColor = true;
-            this.cmdCreate.Visible = false;
-            this.cmdCreate.Click += new System.EventHandler(this.cmdCreate_Click);
-            // 
-            // cmdUpdatePassword
-            // 
-            this.cmdUpdatePassword.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue;
-            this.cmdUpdatePassword.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.cmdUpdatePassword.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cmdUpdatePassword.Location = new System.Drawing.Point(516, 37);
-            this.cmdUpdatePassword.Name = "cmdUpdatePassword";
-            this.cmdUpdatePassword.Size = new System.Drawing.Size(75, 58);
-            this.cmdUpdatePassword.TabIndex = 13;
-            this.cmdUpdatePassword.Text = "UPDATE";
-            this.cmdUpdatePassword.UseVisualStyleBackColor = true;
-            this.cmdUpdatePassword.Visible = false;
-            this.cmdUpdatePassword.Click += new System.EventHandler(this.cmdUpdatePassword_Click);
-            // 
-            // lblConfirm
-            // 
-            this.lblConfirm.AutoSize = true;
-            this.lblConfirm.Location = new System.Drawing.Point(239, 110);
-            this.lblConfirm.Name = "lblConfirm";
-            this.lblConfirm.Size = new System.Drawing.Size(59, 13);
-            this.lblConfirm.TabIndex = 12;
-            this.lblConfirm.Text = "CONFIRM:";
-            this.lblConfirm.Visible = false;
-            // 
-            // txtConfirm
-            // 
-            this.txtConfirm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtConfirm.Location = new System.Drawing.Point(329, 110);
-            this.txtConfirm.Name = "txtConfirm";
-            this.txtConfirm.PasswordChar = '*';
-            this.txtConfirm.Size = new System.Drawing.Size(176, 20);
-            this.txtConfirm.TabIndex = 11;
-            this.txtConfirm.Visible = false;
-            // 
-            // cmdLogin
-            // 
-            this.cmdLogin.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue;
-            this.cmdLogin.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.cmdLogin.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cmdLogin.Location = new System.Drawing.Point(516, 37);
-            this.cmdLogin.Name = "cmdLogin";
-            this.cmdLogin.Size = new System.Drawing.Size(75, 58);
-            this.cmdLogin.TabIndex = 8;
-            this.cmdLogin.Text = "LOGIN";
-            this.cmdLogin.UseVisualStyleBackColor = true;
-            this.cmdLogin.Click += new System.EventHandler(this.cmdLogin_Click);
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(239, 75);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(73, 13);
-            this.lblPassword.TabIndex = 10;
-            this.lblPassword.Text = "PASSWORD:";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(239, 37);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(74, 13);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "USER NAME:";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPassword.Location = new System.Drawing.Point(329, 75);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(176, 20);
-            this.txtPassword.TabIndex = 1;
-            this.txtPassword.Leave += new System.EventHandler(this.txtPassword_Leave);
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtUsername.Location = new System.Drawing.Point(329, 37);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(176, 20);
-            this.txtUsername.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(219, 266);
-            this.panel2.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(44, 37);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(111, 33);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "LOGIN";
-            // 
             // tbcSettings
             // 
             this.tbcSettings.Controls.Add(this.tabSettings);
             this.tbcSettings.Location = new System.Drawing.Point(0, 0);
             this.tbcSettings.Name = "tbcSettings";
             this.tbcSettings.SelectedIndex = 0;
-            this.tbcSettings.Size = new System.Drawing.Size(204, 294);
+            this.tbcSettings.Size = new System.Drawing.Size(605, 523);
             this.tbcSettings.TabIndex = 30;
             this.tbcSettings.Visible = false;
             // 
             // tabSettings
             // 
+            this.tabSettings.Controls.Add(this.groupBox6);
             this.tabSettings.Controls.Add(this.cmdSaveSettings);
             this.tabSettings.Controls.Add(this.groupBox5);
             this.tabSettings.Controls.Add(this.groupBox4);
@@ -553,7 +377,7 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(196, 268);
+            this.tabSettings.Size = new System.Drawing.Size(597, 497);
             this.tabSettings.TabIndex = 0;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -562,11 +386,11 @@
             // 
             this.cmdSaveSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdSaveSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdSaveSettings.Location = new System.Drawing.Point(412, 83);
+            this.cmdSaveSettings.Location = new System.Drawing.Point(412, 278);
             this.cmdSaveSettings.Name = "cmdSaveSettings";
             this.cmdSaveSettings.Size = new System.Drawing.Size(136, 23);
             this.cmdSaveSettings.TabIndex = 20;
-            this.cmdSaveSettings.Text = "SAVE";
+            this.cmdSaveSettings.Text = "EXIT";
             this.cmdSaveSettings.UseVisualStyleBackColor = true;
             this.cmdSaveSettings.Click += new System.EventHandler(this.cmdSaveSettings_Click);
             // 
@@ -636,9 +460,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(12, 25);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(67, 13);
+            this.label14.Size = new System.Drawing.Size(41, 13);
             this.label14.TabIndex = 8;
-            this.label14.Text = "Mirth Server:";
+            this.label14.Text = "Server:";
             // 
             // label15
             // 
@@ -689,9 +513,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 25);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(90, 13);
+            this.label7.Size = new System.Drawing.Size(41, 13);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Database Server:";
+            this.label7.Text = "Server:";
             // 
             // txtDbServer
             // 
@@ -753,15 +577,61 @@
             this.txtDbPassword.TabIndex = 7;
             this.txtDbPassword.Leave += new System.EventHandler(this.txtDbPassword_Leave);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.txtPatViewerPort);
+            this.groupBox6.Controls.Add(this.label9);
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.txtPatViewer);
+            this.groupBox6.Location = new System.Drawing.Point(281, 147);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(267, 114);
+            this.groupBox6.TabIndex = 21;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Patient Viewer";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 25);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Server:";
+            // 
+            // txtPatViewer
+            // 
+            this.txtPatViewer.Location = new System.Drawing.Point(72, 25);
+            this.txtPatViewer.Name = "txtPatViewer";
+            this.txtPatViewer.Size = new System.Drawing.Size(145, 20);
+            this.txtPatViewer.TabIndex = 3;
+            this.txtPatViewer.Leave += new System.EventHandler(this.txtPatViewer_Leave);
+            // 
+            // txtPatViewerPort
+            // 
+            this.txtPatViewerPort.Location = new System.Drawing.Point(72, 54);
+            this.txtPatViewerPort.Name = "txtPatViewerPort";
+            this.txtPatViewerPort.Size = new System.Drawing.Size(57, 20);
+            this.txtPatViewerPort.TabIndex = 15;
+            this.txtPatViewerPort.TextChanged += new System.EventHandler(this.txtPatViewerPort_TextChanged);
+            this.txtPatViewerPort.Leave += new System.EventHandler(this.txtPatViewerPort_Leave);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 54);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Port:";
+            // 
             // frmSubscriptions
             // 
-            this.AcceptButton = this.cmdLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdClose;
-            this.ClientSize = new System.Drawing.Size(642, 317);
+            this.ClientSize = new System.Drawing.Size(603, 556);
             this.Controls.Add(this.tbcSettings);
-            this.Controls.Add(this.tbcLogin);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tbcSubscriptions);
             this.Controls.Add(this.label2);
@@ -779,14 +649,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
             this.grpSubscriptions.ResumeLayout(false);
             this.tbcSubscriptions.ResumeLayout(false);
+            this.tabShow.ResumeLayout(false);
             this.tabLoad.ResumeLayout(false);
             this.tabLoad.PerformLayout();
-            this.tabShow.ResumeLayout(false);
-            this.tbcLogin.ResumeLayout(false);
-            this.tabLogin.ResumeLayout(false);
-            this.tabLogin.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.tbcSettings.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -795,6 +660,8 @@
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -819,10 +686,6 @@
         private System.Windows.Forms.DataGridView dgvSubscriptions;
         private System.Windows.Forms.GroupBox grpSubscriptions;
         private System.Windows.Forms.ProgressBar prbLoad;
-        private System.Windows.Forms.Button cmdUpdate;
-        private System.Windows.Forms.Button cmdByatronics;
-        private System.Windows.Forms.Button cmdFishcake;
-        private System.Windows.Forms.TabControl tbcSubscriptions;
         private System.Windows.Forms.TabPage tabLoad;
         private System.Windows.Forms.TabPage tabShow;
         private System.Windows.Forms.Label lblTermDateTime;
@@ -830,20 +693,6 @@
         private System.Windows.Forms.ToolTip tlpSubscriptions;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TabControl tbcLogin;
-        private System.Windows.Forms.TabPage tabLogin;
-        private System.Windows.Forms.Button cmdLogin;
-        private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblConfirm;
-        private System.Windows.Forms.TextBox txtConfirm;
-        private System.Windows.Forms.Button cmdUpdatePassword;
-        private System.Windows.Forms.Button cmdCreate;
-        private System.Windows.Forms.TabControl tbcSettings;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label7;
@@ -865,6 +714,13 @@
         private System.Windows.Forms.TextBox txtLength;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button cmdSaveSettings;
+        public System.Windows.Forms.TabControl tbcSettings;
+        public System.Windows.Forms.TabControl tbcSubscriptions;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TextBox txtPatViewerPort;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtPatViewer;
     }
 }
 
