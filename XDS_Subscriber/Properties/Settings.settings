@@ -24,7 +24,7 @@
       <Value Profile="(Default)">8098</Value>
     </Setting>
     <Setting Name="CancerTypes" Type="System.String" Scope="User">
-      <Value Profile="(Default)">All/Bowel/Lung/Chest/Brain/Liver</Value>
+      <Value Profile="(Default)">Mesothelioma/Cancer Registry</Value>
     </Setting>
     <Setting Name="HashCode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">99999</Value>

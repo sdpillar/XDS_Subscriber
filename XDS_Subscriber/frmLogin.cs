@@ -69,6 +69,7 @@ namespace XDS_Subscriber
                 myDatabase.CurrentUser = txtUsername.Text;
                 this.Hide();
                 frmSubscriptions subForm = new frmSubscriptions();
+                subForm.Text = "Subscriptions - " + txtUsername.Text;
                 subForm.tbcSubscriptions.Visible = false;
                 subForm.tbcSettings.Visible = true;
                 subForm.LoadSettings();
@@ -82,8 +83,10 @@ namespace XDS_Subscriber
                     myDatabase.CurrentUser = txtUsername.Text;
                     this.Hide();
                     frmSubscriptions subForm = new frmSubscriptions();
+                    subForm.Text = "Subscriptions - " + txtUsername.Text;
                     subForm.tbcSubscriptions.Visible = true;
                     subForm.tbcSettings.Visible = false;
+
                     subForm.Show();
                 }
                 else

@@ -15,40 +15,98 @@ using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace XDS_Subscriber
-{   
+{
     public partial class frmSubscriptions : Form
     {
+
         SqlConnection registryConn = null;
-        SqlConnection userConn = null;
+        //SqlConnection userConn = null;
         UserDatabase myDatabase = new UserDatabase();
         private BindingSource bindingSourceSubscriptions = new BindingSource();
         bool patientSubscriptionProcess = false;
         string currentUser = "";
         int currentHashValue;
         SubscriptionLog subLog = new SubscriptionLog(@"C:\HSS_XDS");
+        public List<string> byotronics = new List<string>();
+        Thread oThread = null;
+
+        public void DecryptPatientId()
+        {
+            while (true)
+            {
+                Console.WriteLine("DecryptPatientId is running in its own thread.");
+                List<string> byotronics = new List<string>();
+
+                string patientId = "";
+                using(SqlCommand selectCommand = new SqlCommand())
+                {
+                    SqlDataReader dataReader;
+                    selectCommand.Connection = registryConn;
+                    selectCommand.CommandText = "select patientId from dbo.MySubscriptions where ByotronicsFlag = 0";
+                    dataReader = selectCommand.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        Console.WriteLine(dataReader.GetString(0));
+                        byotronics.Add(dataReader.GetString(0));
+                    }
+                    dataReader.Close();
+                }
+
+                using (SqlCommand updateCommand = new SqlCommand("",registryConn))
+                {
+                    foreach (string patient in byotronics)
+                    {
+                        patientId = formatPatientId(patient);
+                        using (WebClient client = new WebClient())
+                        {
+                            //the encrypted patiemt id is sent to Mirth
+                            //Mirth matches this with the actual CRIS number
+                            //Mirth then queries the CRIS database for the latest accession number and site for that patient
+                            //Mirth send this in JSON form to Byotronics
+                            Console.WriteLine("Encrypted patient id - " + patientId + " sent to Mirth...");
+                            byte[] response = client.UploadValues("http://" + Properties.Settings.Default.MirthInstance + ":8099", new NameValueCollection()
+                            {
+                                { "patientId", patientId }
+                                });
+                            string result = System.Text.Encoding.UTF8.GetString(response);
+                            Console.WriteLine("Decrypted patient - " + result);
+
+                            updateCommand.CommandText = "Update dbo.MySubscriptions set ByotronicsFlag = 1 where patientId = '" + patient + "'";
+                            updateCommand.ExecuteNonQuery();
+                            Console.WriteLine("Patient " + patient + " - set flag to 1");
+                        }
+                    }
+                }
+                Console.WriteLine("Completed decryption of patientIds...");
+            }
+        }
 
         public frmSubscriptions()
         {
             InitializeComponent();
+            
         }
 
         private void frmSubscriptions_Load(object sender, EventArgs e)
         {
-            //tbcLogin.Visible = false;
-            
+            Console.WriteLine("Thread Start/Stop/Join Sample");
+
             tbcSubscriptions.Visible = true;
-            
-            this.Text = "Subscriptions - " + myDatabase.CurrentUser;
+            //this.Text = "Subscriptions - " + myDatabase.CurrentUser;
             OnStartup();
             int subscriptionCount = bindingSourceSubscriptions.Count;
             if (subscriptionCount == 0)
             {
                 tbcSubscriptions.SelectedTab = tabLoad;
             }
-            
-            
+
+
+
+
             /*subLog.WriteLog("Subscription form loaded...");
             //check database exists
             subLog.WriteLog("User database - " + Properties.Settings.Default.UserDb);
@@ -233,6 +291,10 @@ namespace XDS_Subscriber
                 tlpSubscriptions.SetToolTip(lblTerm, "Change the subscription term in settings...");
                 SetupSubscriptionsControl();
                 LoadSubscriptions();
+
+                oThread = new Thread(new ThreadStart(DecryptPatientId));
+                oThread.Start();
+
                 subLog.WriteLog("Startup routine completed...");
             }
             catch(Exception ex)
@@ -253,13 +315,14 @@ namespace XDS_Subscriber
             try
             {
                 subLog.WriteLog("Loading subscriptions...");
-                bindingSourceSubscriptions.DataSource = GetData("Select patientId as PatientId, SubscriptionDate as [Start Date], TerminationTime as [End Date], CancerType as [Cancer Type], ConsumerReferenceAddress as [Notify To] From dbo.MySubscriptions", registryConn);
+                bindingSourceSubscriptions.DataSource = GetData("Select ByotronicsFlag as [B], patientId as PatientId, SubscriptionDate as [Start Date], TerminationTime as [End Date], CancerType as [Subscription Type], ConsumerReferenceAddress as [Notify To] From dbo.MySubscriptions", registryConn);
                 dgvSubscriptions.DataSource = bindingSourceSubscriptions;
                 int subscriptionCount = bindingSourceSubscriptions.Count;
                 grpSubscriptions.Text = "Subscriptions (" + subscriptionCount + ")";
 
-                dgvSubscriptions.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-                int dataGridViewHeight = subscriptionCount * 22;
+                dgvSubscriptions.Columns[0].ReadOnly = true;
+                dgvSubscriptions.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+                int dataGridViewHeight = (subscriptionCount + 1) * 22;
                 if (dataGridViewHeight < 440)
                 {
                     dgvSubscriptions.Height = dataGridViewHeight;
@@ -271,8 +334,15 @@ namespace XDS_Subscriber
 
                 //dgvSubscriptions.Height = subscriptionCount * 22;
 
-                dgvSubscriptions.Update();
-                dgvSubscriptions.Refresh();
+                /*DataGridViewCheckBoxColumn byotronicsColumn = new DataGridViewCheckBoxColumn();
+                byotronicsColumn.Name = "B";
+                byotronicsColumn.HeaderText = "B";
+                byotronicsColumn.Width = 50;
+                byotronicsColumn.ReadOnly = true;
+                dgvSubscriptions.Columns.Add(byotronicsColumn);*/
+
+                //dgvSubscriptions.Update();
+                //dgvSubscriptions.Refresh();
                 subLog.WriteLog("Subscriptions loaded...");
             }
             catch(Exception ex)
@@ -511,6 +581,7 @@ namespace XDS_Subscriber
                                 bool patientSubscribed = PatientSubscribe(patientId, termTime, notifyEndpoint, cancerType);
                                 if (patientSubscribed == true)
                                 {
+                                    byotronics.Add(patientId); //add to list for later processing and sending to Byotronics
                                     lstPatients.Items[i].Checked = true;
                                     prbLoad.PerformStep();
                                 }
@@ -527,6 +598,7 @@ namespace XDS_Subscriber
                     }
                 }
                 patientSubscriptionProcess = true;
+                //ByotronicsTimer.Start();
                 Cursor.Current = Cursors.Default;
             }
             catch(Exception ex)
@@ -543,11 +615,12 @@ namespace XDS_Subscriber
                 subLog.WriteLog("Closing Registry db connection...");
                 registryConn.Close();
             }
-            if(userConn != null)
+            oThread.Abort();
+            /*if(userConn != null)
             {
                 subLog.WriteLog("Closing Users db connection...");
                 userConn.Close();
-            }
+            }*/
             subLog.WriteLog("Closing Subscription form...");
             frmLogin loginForm = new frmLogin();
             loginForm.Close();
@@ -791,7 +864,7 @@ namespace XDS_Subscriber
         {
             try
             {
-                if (e.ColumnIndex == 0)
+                if (e.ColumnIndex == 1)
                 {
                     e.Value = formatPatientId((string)e.Value);
                 }
@@ -799,15 +872,23 @@ namespace XDS_Subscriber
                 foreach (DataGridViewColumn column in dgvSubscriptions.Columns)
                 {
                     DataGridViewWidth = DataGridViewWidth + column.Width;
+
+                    column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    /*if(column.Index == 0)
+                    {
+                        column.ReadOnly = true;
+                    }*/
                 }
                 dgvSubscriptions.Width = DataGridViewWidth + 20;
-                grpSubscriptions.Width = dgvSubscriptions.Width + 17;
-                //tbcSubscriptions.Width = grpSubscriptions.Width + 27;
-                foreach (DataGridViewColumn col in dgvSubscriptions.Columns)
+                grpSubscriptions.Width = dgvSubscriptions.Width + 15;
+                tbcSubscriptions.Width = grpSubscriptions.Width + 27;
+                this.Width = tbcSubscriptions.Width + 18;
+                /*foreach (DataGridViewColumn col in dgvSubscriptions.Columns)
                 {
                     col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                }
+                }*/
             }
             catch(Exception ex)
             {
@@ -826,11 +907,11 @@ namespace XDS_Subscriber
 
         private void tabShow_Enter(object sender, EventArgs e)
         {
-            LoadSubscriptions();
+            /*LoadSubscriptions();
             if (dgvSubscriptions.RowCount == 0)
             {
                 dgvSubscriptions.Width = 410;
-            }
+            }*/
         }
 
         private void tabLoad_Enter(object sender, EventArgs e)
@@ -846,7 +927,7 @@ namespace XDS_Subscriber
         private void dgvSubscriptions_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             
-            if(e.ColumnIndex == 0 && dgvSubscriptions.RowCount > 0)
+            if(e.ColumnIndex == 1 && dgvSubscriptions.RowCount > 0)
             {
                 string input = "Patient Id";
                 string patientId = "";
@@ -878,7 +959,7 @@ namespace XDS_Subscriber
 
         private void dgvSubscriptions_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0 && e.RowIndex > -1)
+            if (e.ColumnIndex == 1 && e.RowIndex > -1)
             {
                 string patientId = dgvSubscriptions[e.ColumnIndex, e.RowIndex].Value.ToString();
                 patientId = formatPatientId(patientId);

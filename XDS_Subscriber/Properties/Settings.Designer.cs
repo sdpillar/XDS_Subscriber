@@ -109,7 +109,7 @@ namespace XDS_Subscriber.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("All/Bowel/Lung/Chest/Brain/Liver")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Mesothelioma/Cancer Registry")]
         public string CancerTypes {
             get {
                 return ((string)(this["CancerTypes"]));
