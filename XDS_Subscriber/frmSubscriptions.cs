@@ -868,6 +868,7 @@ namespace XDS_Subscriber
                 {
                     e.Value = formatPatientId((string)e.Value);
                 }
+
                 int DataGridViewWidth = 0;
                 foreach (DataGridViewColumn column in dgvSubscriptions.Columns)
                 {
