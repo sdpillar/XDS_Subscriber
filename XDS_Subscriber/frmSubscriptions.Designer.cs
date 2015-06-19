@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmdClose = new System.Windows.Forms.Button();
             this.grpPatients = new System.Windows.Forms.GroupBox();
             this.prbLoad = new System.Windows.Forms.ProgressBar();
@@ -103,7 +103,7 @@
             // 
             this.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdClose.Location = new System.Drawing.Point(469, 529);
+            this.cmdClose.Location = new System.Drawing.Point(492, 529);
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Size = new System.Drawing.Size(136, 23);
             this.cmdClose.TabIndex = 0;
@@ -277,17 +277,17 @@
             this.dgvSubscriptions.AllowUserToDeleteRows = false;
             this.dgvSubscriptions.AllowUserToResizeColumns = false;
             this.dgvSubscriptions.AllowUserToResizeRows = false;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Blue;
-            this.dgvSubscriptions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle11;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.OrangeRed;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSubscriptions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Blue;
+            this.dgvSubscriptions.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.OrangeRed;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSubscriptions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvSubscriptions.Location = new System.Drawing.Point(8, 19);
             this.dgvSubscriptions.MultiSelect = false;
@@ -295,7 +295,7 @@
             this.dgvSubscriptions.RowHeadersVisible = false;
             this.dgvSubscriptions.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSubscriptions.Size = new System.Drawing.Size(167, 305);
+            this.dgvSubscriptions.Size = new System.Drawing.Size(143, 305);
             this.dgvSubscriptions.TabIndex = 25;
             this.dgvSubscriptions.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSubscriptions_CellContentDoubleClick);
             this.dgvSubscriptions.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSubscriptions_CellFormatting);
@@ -306,7 +306,7 @@
             this.grpSubscriptions.Controls.Add(this.dgvSubscriptions);
             this.grpSubscriptions.Location = new System.Drawing.Point(8, 6);
             this.grpSubscriptions.Name = "grpSubscriptions";
-            this.grpSubscriptions.Size = new System.Drawing.Size(593, 470);
+            this.grpSubscriptions.Size = new System.Drawing.Size(596, 470);
             this.grpSubscriptions.TabIndex = 1;
             this.grpSubscriptions.TabStop = false;
             this.grpSubscriptions.Text = "Subscriptions";
@@ -318,7 +318,7 @@
             this.tbcSubscriptions.Location = new System.Drawing.Point(0, 0);
             this.tbcSubscriptions.Name = "tbcSubscriptions";
             this.tbcSubscriptions.SelectedIndex = 0;
-            this.tbcSubscriptions.Size = new System.Drawing.Size(632, 523);
+            this.tbcSubscriptions.Size = new System.Drawing.Size(628, 523);
             this.tbcSubscriptions.TabIndex = 1;
             this.tbcSubscriptions.DoubleClick += new System.EventHandler(this.tbcSubscriptions_DoubleClick);
             // 
@@ -328,7 +328,7 @@
             this.tabShow.Location = new System.Drawing.Point(4, 22);
             this.tabShow.Name = "tabShow";
             this.tabShow.Padding = new System.Windows.Forms.Padding(3);
-            this.tabShow.Size = new System.Drawing.Size(624, 497);
+            this.tabShow.Size = new System.Drawing.Size(620, 497);
             this.tabShow.TabIndex = 1;
             this.tabShow.Text = "Show Subscriptions";
             this.tabShow.UseVisualStyleBackColor = true;
@@ -343,7 +343,7 @@
             this.tabLoad.Location = new System.Drawing.Point(4, 22);
             this.tabLoad.Name = "tabLoad";
             this.tabLoad.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoad.Size = new System.Drawing.Size(624, 497);
+            this.tabLoad.Size = new System.Drawing.Size(620, 497);
             this.tabLoad.TabIndex = 0;
             this.tabLoad.Text = "Load Subscriptions";
             this.tabLoad.UseVisualStyleBackColor = true;
@@ -363,7 +363,7 @@
             this.tbcSettings.Location = new System.Drawing.Point(0, 0);
             this.tbcSettings.Name = "tbcSettings";
             this.tbcSettings.SelectedIndex = 0;
-            this.tbcSettings.Size = new System.Drawing.Size(85, 523);
+            this.tbcSettings.Size = new System.Drawing.Size(628, 523);
             this.tbcSettings.TabIndex = 30;
             this.tbcSettings.Visible = false;
             // 
@@ -377,7 +377,7 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(77, 497);
+            this.tabSettings.Size = new System.Drawing.Size(620, 497);
             this.tabSettings.TabIndex = 0;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -630,7 +630,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdClose;
-            this.ClientSize = new System.Drawing.Size(640, 556);
+            this.ClientSize = new System.Drawing.Size(625, 556);
             this.Controls.Add(this.tbcSettings);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tbcSubscriptions);

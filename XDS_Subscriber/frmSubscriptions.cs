@@ -23,6 +23,7 @@ namespace XDS_Subscriber
     {
 
         SqlConnection registryConn = null;
+        SqlConnection byotronicsConn = null;
         //SqlConnection userConn = null;
         UserDatabase myDatabase = new UserDatabase();
         private BindingSource bindingSourceSubscriptions = new BindingSource();
@@ -32,56 +33,75 @@ namespace XDS_Subscriber
         SubscriptionLog subLog = new SubscriptionLog(@"C:\HSS_XDS");
         public List<string> byotronics = new List<string>();
         Thread oThread = null;
+        SqlDataReader byotronicsReader;
 
         public void DecryptPatientId()
         {
-            while (true)
+            try
             {
-                Console.WriteLine("DecryptPatientId is running in its own thread.");
-                List<string> byotronics = new List<string>();
-
-                string patientId = "";
-                using(SqlCommand selectCommand = new SqlCommand())
+                while (true)
                 {
-                    SqlDataReader dataReader;
-                    selectCommand.Connection = registryConn;
-                    selectCommand.CommandText = "select patientId from dbo.MySubscriptions where ByotronicsFlag = 0";
-                    dataReader = selectCommand.ExecuteReader();
+                    
+                    Console.WriteLine("DecryptPatientId is running in its own thread.");
+                    List<string> byotronics = new List<string>();
 
-                    while (dataReader.Read())
-                    {
-                        Console.WriteLine(dataReader.GetString(0));
-                        byotronics.Add(dataReader.GetString(0));
-                    }
-                    dataReader.Close();
-                }
+                    string patientId = "";
 
-                using (SqlCommand updateCommand = new SqlCommand("",registryConn))
-                {
-                    foreach (string patient in byotronics)
+                    using (SqlCommand selectCommand = new SqlCommand())
                     {
-                        patientId = formatPatientId(patient);
-                        using (WebClient client = new WebClient())
+                        Console.WriteLine("Point 1");
+                        //SqlDataReader byotronicsReader;
+                        
+                        selectCommand.Connection = byotronicsConn;
+                        Console.WriteLine("Point 1.2");
+                        selectCommand.CommandText = "select patientId from dbo.MySubscriptions where ByotronicsFlag = 0";
+                        Console.WriteLine("Point 1.3");
+                        byotronicsReader = selectCommand.ExecuteReader();
+                        Console.WriteLine("Point 2");
+                        while (byotronicsReader.Read())
                         {
-                            //the encrypted patiemt id is sent to Mirth
-                            //Mirth matches this with the actual CRIS number
-                            //Mirth then queries the CRIS database for the latest accession number and site for that patient
-                            //Mirth send this in JSON form to Byotronics
-                            Console.WriteLine("Encrypted patient id - " + patientId + " sent to Mirth...");
-                            byte[] response = client.UploadValues("http://" + Properties.Settings.Default.MirthInstance + ":8099", new NameValueCollection()
+                            Console.WriteLine(byotronicsReader.GetString(0));
+                            byotronics.Add(byotronicsReader.GetString(0));
+                        }
+                        Console.WriteLine("Point 3");
+                        byotronicsReader.Close();
+                        Console.WriteLine("Point 4");
+                    }
+                    //byotronicsReader.Close();
+                    Console.WriteLine("Patients selected and in list");
+                    using (SqlCommand updateCommand = new SqlCommand())
+                    {
+                        updateCommand.Connection = byotronicsConn;
+                        foreach (string patient in byotronics)
+                        {
+                            patientId = formatPatientId(patient);
+                            using (WebClient client = new WebClient())
+                            {
+                                //the encrypted patiemt id is sent to Mirth
+                                //Mirth matches this with the actual CRIS number
+                                //Mirth then queries the CRIS database for the latest accession number and site for that patient
+                                //Mirth send this in JSON form to Byotronics
+                                Console.WriteLine("Encrypted patient id - " + patientId + " sent to Mirth...");
+                                byte[] response = client.UploadValues("http://" + Properties.Settings.Default.MirthInstance + ":8099", new NameValueCollection()
                             {
                                 { "patientId", patientId }
                                 });
-                            string result = System.Text.Encoding.UTF8.GetString(response);
-                            Console.WriteLine("Decrypted patient - " + result);
+                                string result = System.Text.Encoding.UTF8.GetString(response);
+                                Console.WriteLine("Decrypted patient - " + result);
 
-                            updateCommand.CommandText = "Update dbo.MySubscriptions set ByotronicsFlag = 1 where patientId = '" + patient + "'";
-                            updateCommand.ExecuteNonQuery();
-                            Console.WriteLine("Patient " + patient + " - set flag to 1");
+                                updateCommand.CommandText = "Update dbo.MySubscriptions set ByotronicsFlag = 1 where patientId = '" + patient + "'";
+                                updateCommand.ExecuteNonQuery();
+                                Console.WriteLine("Patient " + patient + " - set flag to 1");
+                            }
                         }
                     }
+                    //Console.WriteLine("Completed decryption of patientIds...");
                 }
-                Console.WriteLine("Completed decryption of patientIds...");
+            }
+            catch(Exception ex)
+            {
+                string exceptionMsg = ex.Message;
+                Console.WriteLine(exceptionMsg);
             }
         }
 
@@ -276,6 +296,10 @@ namespace XDS_Subscriber
                 subLog.WriteLog("Running OnStartup routine...");
                 subLog.WriteLog("Registry database - " + Properties.Settings.Default.Database);
                 registryConn = myDatabase.openConnection(Properties.Settings.Default.Database);
+                byotronicsConn = myDatabase.openConnection(Properties.Settings.Default.Database);
+
+                
+
                 string types = Properties.Settings.Default.CancerTypes;
                 string[] cancerTypes = types.Split('/');
                 foreach (string type in cancerTypes)
@@ -293,6 +317,8 @@ namespace XDS_Subscriber
                 LoadSubscriptions();
 
                 oThread = new Thread(new ThreadStart(DecryptPatientId));
+                oThread.Name = "Byotronics";
+                oThread.IsBackground = true;
                 oThread.Start();
 
                 subLog.WriteLog("Startup routine completed...");
@@ -615,6 +641,11 @@ namespace XDS_Subscriber
                 subLog.WriteLog("Closing Registry db connection...");
                 registryConn.Close();
             }
+            if (byotronicsConn != null)
+            {
+                subLog.WriteLog("Closing Byotronics db connection...");
+                byotronicsConn.Close();
+            }
             oThread.Abort();
             /*if(userConn != null)
             {
@@ -742,14 +773,46 @@ namespace XDS_Subscriber
                 subLog.WriteLog("Checking " + patientId + " for existing subscription...");
                 string dbPatientId = "";
                 bool subExists = false;
-                SqlCommand command;
-                string sqlSelect = "select patientId from dbo.MySubscriptions";
-                SqlDataReader dataReader;
-                command = new SqlCommand(sqlSelect, registryConn);
-                dataReader = command.ExecuteReader();
-                while (dataReader.Read())
+                subLog.WriteLog("Point 1.1");
+                using (SqlCommand myCommand = new SqlCommand())
                 {
+                    subLog.WriteLog("Point 2.1");
+                    SqlDataReader myReader;
+                    myCommand.Connection = registryConn;
+                    subLog.WriteLog("Point 3.1");
+                    myCommand.CommandText = "select patientId from dbo.MySubscriptions";
+                    myReader = myCommand.ExecuteReader();
+                    subLog.WriteLog("Point 4.1");
+                    while (myReader.Read())
+                    {
+                        subLog.WriteLog("Point 5.1");
+                        dbPatientId = myReader.GetString(0);
+                        subLog.WriteLog("Point 6.1");
+                        int posPatientId = dbPatientId.IndexOf(patientId);
+                        if (posPatientId > -1)
+                        {
+                            subExists = true;
+                            break;
+                        }
+                    }
+                    subLog.WriteLog("Point 7.1");
+                    myReader.Close();
+                    subLog.WriteLog("Point 8.1");
+                }
+                
+                
+                
+                //SqlCommand myCommand;
+                //string sqlSelect = "select patientId from dbo.MySubscriptions";
+                //SqlDataReader dataReader;
+                //myCommand = new SqlCommand(sqlSelect, registryConn);
+                
+                //dataReader = myCommand.ExecuteReader();
+                /*while (dataReader.Read())
+                {
+                    subLog.WriteLog("Point 3");
                     dbPatientId = dataReader.GetString(0);
+                    subLog.WriteLog("Point 4");
                     int posPatientId = dbPatientId.IndexOf(patientId);
                     if (posPatientId > -1)
                     {
@@ -757,7 +820,9 @@ namespace XDS_Subscriber
                         break;
                     }
                 }
+                subLog.WriteLog("Point 5");
                 dataReader.Close();
+                subLog.WriteLog("Point 6");*/
                 if (subExists == true)
                 {
                     subLog.WriteLog("Subscription exists...");
@@ -900,6 +965,8 @@ namespace XDS_Subscriber
         private void tbcSubscriptions_DoubleClick(object sender, EventArgs e)
         {
             LoadSubscriptions();
+            dgvSubscriptions.Update();
+            dgvSubscriptions.Refresh();
             if (dgvSubscriptions.RowCount == 0)
             {
                 dgvSubscriptions.Width = 410;
